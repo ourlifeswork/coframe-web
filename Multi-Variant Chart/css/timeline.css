@@ -1,0 +1,652 @@
+
+.flow-layer {
+    position: absolute;
+    overflow: visible;
+    box-sizing: border-box;
+    border-width: 0px;
+}
+
+.flow-bg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    box-sizing: border-box;
+    border-width: 0px;
+}
+
+.flow-border {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    box-sizing: border-box;
+    border-style: solid;
+    border-width: 0px;
+}
+
+#Timeline.flow-artboard {
+    width: 1280px;
+    height: 450px;
+    overflow: hidden;
+    position: relative;
+    padding: 0px;
+    background-color: #F2F4F9;
+    visibility: visible;
+    pointer-events: none;
+}
+
+
+#Timeline .multi_variant_chart {
+    width: 1280px;
+    height: 450px;
+    left: -0px;
+    top: 0px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #FFFFFF00;
+    overflow: visible;
+}
+
+#Timeline .baseline_variant {
+    width: 1077.74px;
+    height: 45.67px;
+    left: 539.37px;
+    top: 383.6px;
+    transform: translate(-50%, -50%) rotate(0deg);
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .confidence_interval {
+    width: 1077.24px;
+    height: 45.67px;
+    left: 0px;
+    top: -0.01px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .confidence_interval-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    fill: #B1BAC226;
+}
+#Timeline .baseline_variant_1 {
+    width: 1077.24px;
+    height: 16.72px;
+    left: 0.5px;
+    top: 12.88px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .baseline_variant_1-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    stroke: #B1BAC2;
+    fill: #00000000;
+    stroke-linecap: round;
+}
+#Timeline .green_variant {
+    width: 549px;
+    height: 61px;
+    left: 275px;
+    top: 372.93px;
+    transform: translate(-50%, -50%) rotate(0deg);
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .confidence_interval_1 {
+    width: 549px;
+    height: 61px;
+    left: 0px;
+    top: 0px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .confidence_interval_1-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    fill: #72CD5226;
+}
+#Timeline .green_variant_1 {
+    width: 548px;
+    height: 32px;
+    left: 0.5px;
+    top: 11px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .green_variant_1-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    stroke: #72CD52;
+    fill: #00000000;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+#Timeline .teal_variant {
+    width: 150px;
+    height: 34.8px;
+    left: 75.5px;
+    top: 385.33px;
+    transform: translate(-50%, -50%) rotate(0deg);
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .confidence_interval_2 {
+    width: 150px;
+    height: 34.8px;
+    left: 0px;
+    top: 0px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .confidence_interval_2-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    fill: #75C1D926;
+}
+#Timeline .teal_variant_1 {
+    width: 149px;
+    height: 10.5px;
+    left: 0.5px;
+    top: 17px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .teal_variant_1-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    stroke: #75C1D9;
+    fill: #00000000;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+#Timeline .purple_variant {
+    width: 278px;
+    height: 53px;
+    left: 139.5px;
+    top: 378.93px;
+    transform: translate(-50%, -50%) rotate(0deg);
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .confidence_interval_3 {
+    width: 278px;
+    height: 53px;
+    left: 0px;
+    top: 0px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .confidence_interval_3-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    fill: #B078E326;
+}
+#Timeline .purple_variant_1 {
+    width: 277px;
+    height: 17.5px;
+    left: 0.5px;
+    top: 15.5px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .purple_variant_1-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    stroke: #B078E3;
+    fill: #00000000;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+#Timeline .yellow_variant {
+    width: 521px;
+    height: 55.39px;
+    left: 409.5px;
+    top: 353.13px;
+    transform: translate(-50%, -50%) rotate(0deg);
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .confidence_interval_4 {
+    width: 521px;
+    height: 55.39px;
+    left: 0px;
+    top: -0px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .confidence_interval_4-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    fill: #F6D05F26;
+}
+#Timeline .yellow_variant_1 {
+    width: 520px;
+    height: 30.5px;
+    left: 0.5px;
+    top: 9.88px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .yellow_variant_1-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    stroke: #F6D05F;
+    fill: #00000000;
+    stroke-linecap: round;
+}
+#Timeline .red_variant {
+    width: 296px;
+    height: 38px;
+    left: 426.5px;
+    top: 351.43px;
+    transform: translate(-50%, -50%) rotate(0deg);
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .confidence_interval_5 {
+    width: 296px;
+    height: 38px;
+    left: 0px;
+    top: 0px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .confidence_interval_5-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    fill: #F96C8526;
+}
+#Timeline .red_variant_1 {
+    width: 295px;
+    height: 24.75px;
+    left: 0.5px;
+    top: 11.75px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .red_variant_1-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    stroke: #F96C85;
+    fill: #00000000;
+    stroke-linecap: round;
+}
+#Timeline .brown_variant {
+    width: 78.5px;
+    height: 18.75px;
+    left: 588.75px;
+    top: 340.81px;
+    transform: translate(-50%, -50%) rotate(0deg);
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .confidence_interval_6 {
+    width: 78.5px;
+    height: 18.75px;
+    left: 0px;
+    top: -0px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .confidence_interval_6-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    fill: #B8887E26;
+}
+#Timeline .brown_variant_1 {
+    width: 77.5px;
+    height: 8.57px;
+    left: 0.5px;
+    top: 7px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .brown_variant_1-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    stroke: #B8887E;
+    fill: #00000000;
+    stroke-linecap: round;
+}
+#Timeline .orange_variant {
+    width: 504px;
+    height: 25.55px;
+    left: 825.5px;
+    top: 332.25px;
+    transform: translate(-50%, -50%) rotate(0deg);
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .confidence_interval_7 {
+    width: 504px;
+    height: 25.55px;
+    left: 0px;
+    top: -0px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .confidence_interval_7-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    fill: #FF935726;
+}
+#Timeline .orange_variant_1 {
+    width: 503.16px;
+    height: 15.6px;
+    left: 0.5px;
+    top: 3.96px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .orange_variant_1-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    stroke: #FF9357;
+    fill: #00000000;
+    stroke-linecap: round;
+}
+#Timeline .pink_variant {
+    width: 447.5px;
+    height: 53.75px;
+    left: 853.75px;
+    top: 313.56px;
+    transform: translate(-50%, -50%) rotate(0deg);
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .confidence_interval_8 {
+    width: 447.5px;
+    height: 53.75px;
+    left: 0px;
+    top: -0px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .confidence_interval_8-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    fill: #EA83DF26;
+}
+#Timeline .pink_variant_1 {
+    width: 447px;
+    height: 47.05px;
+    left: 0px;
+    top: 1.54px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .pink_variant_1-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    stroke: #EA83DF;
+    fill: #00000000;
+    stroke-linecap: round;
+}
+#Timeline .blue_variant {
+    width: 390.68px;
+    height: 65.76px;
+    left: 865.84px;
+    top: 299.23px;
+    transform: translate(-50%, -50%) rotate(0deg);
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .confidence_interval_9 {
+    width: 390.68px;
+    height: 65.76px;
+    left: 0px;
+    top: 0px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .confidence_interval_9-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    fill: #4582F826;
+}
+#Timeline .blue_variant_1 {
+    width: 390.68px;
+    height: 58.75px;
+    left: 0px;
+    top: 2px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .blue_variant_1-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    stroke: #4582F8;
+    fill: #00000000;
+    stroke-linecap: round;
+}
+#Timeline .mask_1 {
+    width: 1280px;
+    height: 450px;
+    left: -0.15px;
+    top: 0px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #F2F4F9;
+    overflow: visible;
+}
+
+#Timeline .mask_1-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    stroke: #FFFFFF;
+    fill: #F2F4F9;
+    stroke-miterlimit: 10;
+    stroke-width: 0px;
+}
+#Timeline .marker {
+    width: 1px;
+    height: 450px;
+    left: -1.5px;
+    top: 0px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    opacity: 0.5;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .marker-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    fill: #B1BAC2;
+}
+#Timeline .winning_variant {
+    width: 34px;
+    height: 34px;
+    left: -1px;
+    top: 326px;
+    transform: translate(-50%, -50%) rotate(0deg);
+    opacity: 0;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .outer_circle {
+    width: 34px;
+    height: 34px;
+    left: 0px;
+    top: 0px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .outer_circle-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    fill: #4582F80F;
+}
+#Timeline .inner_circle {
+    width: 16.34px;
+    height: 16.33px;
+    left: 8.83px;
+    top: 8.83px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .inner_circle-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    stroke: #FFFFFF;
+    fill: #4582F8;
+    stroke-width: 1.52px;
+}
+#Timeline .base_line_variant {
+    width: 34px;
+    height: 34px;
+    left: -1px;
+    top: 385px;
+    transform: translate(-50%, -50%) rotate(0deg);
+    opacity: 0;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .outer_circle_1 {
+    width: 34px;
+    height: 34px;
+    left: 0px;
+    top: 0px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .outer_circle_1-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    fill: #B1BAC21F;
+}
+#Timeline .inner_circle_1 {
+    width: 16.34px;
+    height: 16.33px;
+    left: 9px;
+    top: 9px;
+    transform: translate(-0%, -0%) rotate(0deg);
+    transform-origin: 0% 0%;
+    background-color: #00000000;
+    overflow: visible;
+}
+
+#Timeline .inner_circle_1-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    stroke: #FFFFFF;
+    fill: #B1BAC2;
+    stroke-width: 1.52px;
+}
+
+
+path {
+    fill-rule: evenodd; 
+}
+
+svg {
+   overflow: visible;
+}
