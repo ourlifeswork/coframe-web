@@ -18,7 +18,7 @@ class Player {
    * A callback function passed to the player that runs upon animation completion.
    * This callback does not take in any parameters.
    */
-  constructor(timeline, timer, loop = true, delay, callback) {
+  constructor(timeline, timer, loop, delay, callback) {
     this.delay = delay;
     
     // Ensure the timer is an HTML element or ID
