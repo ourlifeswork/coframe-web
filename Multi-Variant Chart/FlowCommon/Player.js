@@ -28,7 +28,7 @@ class Player {
       this.timer = timer;
     }
     
-    this.loop = loop; 
+    this.loop = loop;
     this.timeline = timeline;
     this.callback = callback;
     this.setOnFinishCallback();
