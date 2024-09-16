@@ -49,7 +49,7 @@ class TimelineTimeline {
                   fill="freeze"
                   calcMode="spline"
                   keyTimes="0;1"
-                  keySplines="0.42 0 0.58 1"
+                  keySplines="0.445 0.05 0.55 0.95"
                 />
  `
 
@@ -94,11 +94,151 @@ class TimelineTimeline {
         ]
     }
 
+    baseline_variant_opacityTrack() {
+        const element = this.rootElement.querySelector(`${this.elementID} .baseline_variant`);
+        return element.animate({
+            opacity: [0, 1, 1],
+            easing: ["ease-in-out", "ease-in-out"],
+            offset: [0, 0.075, 1],
+          },
+          {
+            duration: this.duration,
+            composite: TimelineTimeline.composite.REPLACE,
+            fill: TimelineTimeline.fill.FORWARDS
+          }
+        )
+    }
+    green_variant_opacityTrack() {
+        const element = this.rootElement.querySelector(`${this.elementID} .green_variant`);
+        return element.animate({
+            opacity: [0, 0, 0.8, 0.8],
+            easing: ["linear", "ease-in-out", "ease-in-out"],
+            offset: [0, 0.115, 0.19, 1],
+          },
+          {
+            duration: this.duration,
+            composite: TimelineTimeline.composite.REPLACE,
+            fill: TimelineTimeline.fill.FORWARDS
+          }
+        )
+    }
+    teal_variant_opacityTrack() {
+        const element = this.rootElement.querySelector(`${this.elementID} .teal_variant`);
+        return element.animate({
+            opacity: [0, 0, 0.8, 0.8],
+            easing: ["linear", "ease-in-out", "ease-in-out"],
+            offset: [0, 0.037, 0.112, 1],
+          },
+          {
+            duration: this.duration,
+            composite: TimelineTimeline.composite.REPLACE,
+            fill: TimelineTimeline.fill.FORWARDS
+          }
+        )
+    }
+    purple_variant_opacityTrack() {
+        const element = this.rootElement.querySelector(`${this.elementID} .purple_variant`);
+        return element.animate({
+            opacity: [0, 0, 0.8, 0.8],
+            easing: ["linear", "ease-in-out", "ease-in-out"],
+            offset: [0, 0.075, 0.15, 1],
+          },
+          {
+            duration: this.duration,
+            composite: TimelineTimeline.composite.REPLACE,
+            fill: TimelineTimeline.fill.FORWARDS
+          }
+        )
+    }
+    yellow_variant_opacityTrack() {
+        const element = this.rootElement.querySelector(`${this.elementID} .yellow_variant`);
+        return element.animate({
+            opacity: [0, 0, 0.8, 0.8],
+            easing: ["linear", "ease-in-out", "ease-in-out"],
+            offset: [0, 0.216, 0.291, 1],
+          },
+          {
+            duration: this.duration,
+            composite: TimelineTimeline.composite.REPLACE,
+            fill: TimelineTimeline.fill.FORWARDS
+          }
+        )
+    }
+    red_variant_opacityTrack() {
+        const element = this.rootElement.querySelector(`${this.elementID} .red_variant`);
+        return element.animate({
+            opacity: [0, 0, 0.8, 0.8],
+            easing: ["linear", "ease-in-out", "ease-in-out"],
+            offset: [0, 0.321, 0.396, 1],
+          },
+          {
+            duration: this.duration,
+            composite: TimelineTimeline.composite.REPLACE,
+            fill: TimelineTimeline.fill.FORWARDS
+          }
+        )
+    }
+    brown_variant_opacityTrack() {
+        const element = this.rootElement.querySelector(`${this.elementID} .brown_variant`);
+        return element.animate({
+            opacity: [0, 0, 0.8, 0.8],
+            easing: ["linear", "ease-in-out", "ease-in-out"],
+            offset: [0, 0.487, 0.521, 1],
+          },
+          {
+            duration: this.duration,
+            composite: TimelineTimeline.composite.REPLACE,
+            fill: TimelineTimeline.fill.FORWARDS
+          }
+        )
+    }
+    orange_variant_opacityTrack() {
+        const element = this.rootElement.querySelector(`${this.elementID} .orange_variant`);
+        return element.animate({
+            opacity: [0, 0, 1, 1],
+            easing: ["linear", "ease-in-out", "ease-in-out"],
+            offset: [0, 0.491, 0.566, 1],
+          },
+          {
+            duration: this.duration,
+            composite: TimelineTimeline.composite.REPLACE,
+            fill: TimelineTimeline.fill.FORWARDS
+          }
+        )
+    }
+    pink_variant_opacityTrack() {
+        const element = this.rootElement.querySelector(`${this.elementID} .pink_variant`);
+        return element.animate({
+            opacity: [0, 0, 0.9, 0.9],
+            easing: ["linear", "ease-in-out", "ease-in-out"],
+            offset: [0, 0.528, 0.603, 1],
+          },
+          {
+            duration: this.duration,
+            composite: TimelineTimeline.composite.REPLACE,
+            fill: TimelineTimeline.fill.FORWARDS
+          }
+        )
+    }
+    blue_variant_opacityTrack() {
+        const element = this.rootElement.querySelector(`${this.elementID} .blue_variant`);
+        return element.animate({
+            opacity: [0, 0, 1, 1],
+            easing: ["linear", "ease-in-out", "ease-in-out"],
+            offset: [0, 0.566, 0.592, 1],
+          },
+          {
+            duration: this.duration,
+            composite: TimelineTimeline.composite.REPLACE,
+            fill: TimelineTimeline.fill.FORWARDS
+          }
+        )
+    }
     mask_1_leftTrack() {
         const element = this.rootElement.querySelector(`${this.elementID} .mask_1`);
         return element.animate({
             left: ['-0.15px', '1061px'],
-            easing: ["ease-in-out"],
+            easing: ["cubic-bezier(0.445, 0.05, 0.55, 0.95)"],
             offset: [0, 1],
           },
           {
@@ -112,6 +252,20 @@ class TimelineTimeline {
         const element = this.rootElement.querySelector(`${this.elementID} .mask_1`);
         return element.animate({
             width: ['1280px', '218.84px'],
+            easing: ["cubic-bezier(0.445, 0.05, 0.55, 0.95)"],
+            offset: [0, 1],
+          },
+          {
+            duration: this.duration,
+            composite: TimelineTimeline.composite.REPLACE,
+            fill: TimelineTimeline.fill.FORWARDS
+          }
+        )
+    }
+    mask_1_fillTrack() {
+        const element = this.rootElement.querySelector(`${this.elementID} .mask_1-svg`);
+        return element.animate({
+            fill: ['#F2F4F9', '#F3F4F9'],
             easing: ["ease-in-out"],
             offset: [0, 1],
           },
@@ -126,7 +280,7 @@ class TimelineTimeline {
         const element = this.rootElement.querySelector(`${this.elementID} .marker`);
         return element.animate({
             left: ['-1.5px', '1060.5px'],
-            easing: ["ease-in-out"],
+            easing: ["cubic-bezier(0.445, 0.05, 0.55, 0.95)"],
             offset: [0, 1],
           },
           {
@@ -140,7 +294,7 @@ class TimelineTimeline {
         const element = this.rootElement.querySelector(`${this.elementID} .winning_variant`);
         return element.animate({
             left: ['-1px', '1061.5px'],
-            easing: ["ease-in-out"],
+            easing: ["cubic-bezier(0.445, 0.05, 0.55, 0.95)"],
             offset: [0, 1],
           },
           {
@@ -153,9 +307,9 @@ class TimelineTimeline {
     winning_variant_topTrack() {
         const element = this.rootElement.querySelector(`${this.elementID} .winning_variant`);
         return element.animate({
-            top: ['326px', '323px', '313px', '307px', '297px', '293px', '296px', '299px', '294px', '292px', '286px', '284px', '284px', '277px', '275px', '274px', '278px', '280px', '268px'],
-            easing: ["ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out"],
-            offset: [0, 0.586, 0.6, 0.62, 0.63, 0.639, 0.656, 0.669, 0.679, 0.688, 0.705, 0.747, 0.765, 0.781, 0.794, 0.808, 0.83, 0.861, 1],
+            top: ['327px', '327px', '320px', '313px', '307px', '297px', '293px', '296px', '299px', '294px', '292px', '286px', '284px', '284px', '277px', '275px', '274px', '278px', '280px', '268px'],
+            easing: ["linear", "ease-in-out", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "ease-in-out", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)"],
+            offset: [0, 0.575, 0.586, 0.6, 0.62, 0.63, 0.639, 0.656, 0.669, 0.679, 0.688, 0.705, 0.747, 0.765, 0.781, 0.794, 0.808, 0.83, 0.861, 1],
           },
           {
             duration: this.duration,
@@ -168,8 +322,8 @@ class TimelineTimeline {
         const element = this.rootElement.querySelector(`${this.elementID} .winning_variant`);
         return element.animate({
             opacity: [0, 0, 1, 1],
-            easing: ["linear", "ease-in-out", "ease-in-out"],
-            offset: [0, 0.573, 0.582, 1],
+            easing: ["linear", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "ease-in-out"],
+            offset: [0, 0.566, 0.593, 1],
           },
           {
             duration: this.duration,
@@ -182,7 +336,7 @@ class TimelineTimeline {
         const element = this.rootElement.querySelector(`${this.elementID} .base_line_variant`);
         return element.animate({
             left: ['-1px', '-8.5px'],
-            easing: ["ease-in-out"],
+            easing: ["cubic-bezier(0.445, 0.05, 0.55, 0.95)"],
             offset: [0, 1],
           },
           {
@@ -196,7 +350,7 @@ class TimelineTimeline {
         const element = this.rootElement.querySelector(`${this.elementID} .base_line_variant`);
         return element.animate({
             top: ['385px', '384px', '385px', '384px', '383px', '384px', '384px', '381px', '380px', '383px', '384px', '381px', '381px', '385px', '388px', '387px', '389px', '387px', '387px', '381px', '379px', '381px', '385px', '388px', '386.5px', '389px', '389px', '388px', '383px', '376px', '377px', '378px', '387px', '389px', '385px', '378px', '382px', '390px', '388px', '388px', '390px', '388px', '386px', '387px', '392px', '391px', '383px', '383px', '389px', '389px', '388px', '389px', '387px', '386px', '386px'],
-            easing: ["ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out", "ease-in-out"],
+            easing: ["cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "ease-in-out", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "ease-in-out", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "ease-in-out", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "ease-in-out", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "ease-in-out", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "ease-in-out", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "ease-in-out", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "ease-in-out"],
             offset: [0, 0.02, 0.06, 0.08, 0.1, 0.12, 0.16, 0.18, 0.2, 0.22, 0.228, 0.24, 0.249, 0.26, 0.28, 0.286, 0.3, 0.32, 0.331, 0.34, 0.348, 0.355, 0.36, 0.38, 0.4, 0.406, 0.42, 0.44, 0.46, 0.47, 0.48, 0.489, 0.5, 0.54, 0.56, 0.572, 0.58, 0.6, 0.613, 0.62, 0.64, 0.66, 0.68, 0.713, 0.73, 0.745, 0.76, 0.78, 0.8, 0.82, 0.839, 0.86, 0.9, 0.92, 1],
           },
           {
@@ -210,7 +364,7 @@ class TimelineTimeline {
         const element = this.rootElement.querySelector(`${this.elementID} .base_line_variant`);
         return element.animate({
             opacity: [0, 0, 1, 1],
-            easing: ["linear", "ease-in-out", "ease-in-out"],
+            easing: ["linear", "cubic-bezier(0.445, 0.05, 0.55, 0.95)", "ease-in-out"],
             offset: [0, 0.043, 0.07, 1],
           },
           {
@@ -224,7 +378,7 @@ class TimelineTimeline {
         const element = this.rootElement.querySelector(`${this.elementID} .outer_circle_1`);
         return element.animate({
             left: ['0px', '1070px'],
-            easing: ["ease-in-out"],
+            easing: ["cubic-bezier(0.445, 0.05, 0.55, 0.95)"],
             offset: [0, 1],
           },
           {
@@ -238,7 +392,7 @@ class TimelineTimeline {
         const element = this.rootElement.querySelector(`${this.elementID} .outer_circle_1`);
         return element.animate({
             top: ['0px', '-3px'],
-            easing: ["ease-in-out"],
+            easing: ["cubic-bezier(0.445, 0.05, 0.55, 0.95)"],
             offset: [0, 1],
           },
           {
@@ -252,7 +406,7 @@ class TimelineTimeline {
         const element = this.rootElement.querySelector(`${this.elementID} .inner_circle_1`);
         return element.animate({
             left: ['9px', '1079px'],
-            easing: ["ease-in-out"],
+            easing: ["cubic-bezier(0.445, 0.05, 0.55, 0.95)"],
             offset: [0, 1],
           },
           {
@@ -266,7 +420,7 @@ class TimelineTimeline {
         const element = this.rootElement.querySelector(`${this.elementID} .inner_circle_1`);
         return element.animate({
             top: ['9px', '6px'],
-            easing: ["ease-in-out"],
+            easing: ["cubic-bezier(0.445, 0.05, 0.55, 0.95)"],
             offset: [0, 1],
           },
           {
@@ -282,8 +436,19 @@ class TimelineTimeline {
         */
         createAllAnimations() {
             return [
+                this.baseline_variant_opacityTrack(),
+                this.green_variant_opacityTrack(),
+                this.teal_variant_opacityTrack(),
+                this.purple_variant_opacityTrack(),
+                this.yellow_variant_opacityTrack(),
+                this.red_variant_opacityTrack(),
+                this.brown_variant_opacityTrack(),
+                this.orange_variant_opacityTrack(),
+                this.pink_variant_opacityTrack(),
+                this.blue_variant_opacityTrack(),
                 this.mask_1_leftTrack(),
                 this.mask_1_widthTrack(),
+                this.mask_1_fillTrack(),
                 this.marker_leftTrack(),
                 this.winning_variant_leftTrack(),
                 this.winning_variant_topTrack(),
