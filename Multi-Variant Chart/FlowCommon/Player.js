@@ -28,7 +28,7 @@ class Player {
       this.timer = timer;
     }
     
-    this.loop = true;  // Force loop to always be true
+    this.loop = loop; 
     this.timeline = timeline;
     this.callback = callback;
     this.setOnFinishCallback();
