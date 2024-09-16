@@ -1,6 +1,3 @@
-/**
- * The Player is a generic class for handling the loading, unloading, and playback of a `Timeline` to be associated with a DOM element. A player must be able to construct a timer – using an existing DOM element or ID – which handles timing and the execution of a callback on completion.
- */
 class Player {
   /**
    * @constructor
@@ -21,17 +18,23 @@ class Player {
    * A callback function passed to the player that runs upon animation completion.
    * This callback does not take in any parameters.
    */
-  constructor(timeline, timer, loop, delay, callback) {
+  constructor(timeline, timer, loop = true, delay, callback) {
     this.delay = delay;
+    
+    // Ensure the timer is an HTML element or ID
     if (typeof timer === 'string' || timer instanceof String) {
       this.timer = document.getElementById(timer);
     } else {
       this.timer = timer;
     }
-    this.loop = loop;
+    
+    this.loop = true;  // Force loop to always be true
     this.timeline = timeline;
     this.callback = callback;
     this.setOnFinishCallback();
+    
+    // Play the animation automatically after setting the timeline
+    setTimeout(() => this.play(), this.delay || 0);
   }
 
   /**
@@ -51,36 +54,27 @@ class Player {
    *
    */
   set timeline(timeline) {
-    // Work around for Safari bug. More detail provided in the
-    // comment above the `cancelAnimations` function in this file.
     this.cancelAnimations();
 
-    // Pause the current timeline, if it exists
     if (this._timeline != null) {
       this.pause();
     }
 
     this._timeline = timeline;
 
-    // Prepare `self` to receive a new timeline, or initiate playback.
     if (this._timeline === null) {
       this.timingAnimation = null;
       this.currentTime = 0;
       this.shouldPlay = false;
     } else {
-      //Set up the timing animation, which is used to track the current playback time
-      this.timingAnimation = this.timer.animate(
-        {},
-        this.timeline.duration + this.delay);
+      this.timingAnimation = this.timer.animate({}, this.timeline.duration + this.delay);
       this.timingAnimation.currentTime = 0;
       this.timingAnimation.pause();
 
-      //Load all images, shapes, animations
       this.timeline.loadFillImages();
       this.timeline.loadSVGAnimations();
       this.animations = this.timeline.createAllAnimations();
 
-      //Prepare for playback
       this.shouldPlay = true;
       this.pause();
       this.setOnFinishCallback();
@@ -111,22 +105,18 @@ class Player {
    * A numeric value representing time in milliseconds.
    */
   set currentTime(time) {
-    // There should always be both a timeline and a timing animation, if not do nothing
     if (this.timeline === null || this.timingAnimation === null) {
       return;
     }
 
-    // Set the time for all animations in the timeline
     this.animations.forEach((animation) => {
       animation.currentTime = time;
     });
 
-    // Set the time for all shapes (SVG/SMIL) in the timeline
     this.timeline.allShapes.forEach((shape) => {
       shape.setCurrentTime(time / 1000);
     });
 
-    // Set the time for the timing animation
     this.timingAnimation.currentTime = time;
   }
 
@@ -134,8 +124,6 @@ class Player {
    * Work around for Safari. When switching from one timeline to
    * another Safari will jump to a random point in the first
    * timeline unless the effect target of each animation is set to null.
-   * This is to ensure that Safari cannot access any animation from the previous
-   * timeline.
    */
   cancelAnimations() {
     if (this.animations === undefined || this.animations === null) { return; }
@@ -157,7 +145,6 @@ class Player {
     this.animations.forEach((animation) => {
       animation.play();
     });
-
 
     this.timeline.allShapes.forEach((shape) => {
       const t = shape.getCurrentTime() % this.timeline.duration;
@@ -203,10 +190,6 @@ class Player {
     this.currentTime = 0;
   }
 
-  //------------------
-  // interface updates
-  //------------------
-
   /**
    * Sets the callback function that will be run at the end of each animation.
    */
@@ -217,16 +200,13 @@ class Player {
     this.timingAnimation.onfinish = () => {
       if (this.loop === true) {
         this.currentTime = 0;
+        this.play(); // Automatically replay on finish
       } else {
         this.pause();
       }
       if (typeof this.callback != undefined && this.callback != null) this.callback();
     };
   }
-
-  //---------------
-  // helper methods
-  //---------------
 
   /**
    * Converts a numeric value representing a time in milliseconds into a string.
