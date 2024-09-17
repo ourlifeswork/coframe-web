@@ -227,10 +227,34 @@ function createPlayer(
   callback,
   rootID,
   elementID,
-  resourcesPath) {
+  resourcesPath
+) {
   const shadowDomContainer = document.getElementById(rootID);
   const { shadowRoot } = shadowDomContainer;
   const timer = shadowRoot.getElementById(timerID);
   const forwardTimeline = new Timeline(shadowRoot, elementID, resourcesPath);
-  return new Player(forwardTimeline, timer, loop, delay, callback);
+  const player = new Player(forwardTimeline, timer, loop, delay, callback);
+
+  // Create an Intersection Observer to trigger the play when the element comes into view
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Element has entered the viewport, start the animation
+          player.play();
+        } else {
+          // Optionally, you can pause the animation when it leaves the viewport
+          player.pause();
+        }
+      });
+    },
+    {
+      threshold: 0.5, // 50% of the element needs to be visible to trigger the play
+    }
+  );
+
+  // Start observing the timer element
+  observer.observe(timer);
+
+  return player;
 }
