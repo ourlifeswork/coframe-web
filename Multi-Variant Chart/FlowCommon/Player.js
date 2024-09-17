@@ -20,21 +20,21 @@ class Player {
    */
   constructor(timeline, timer, loop = false, delay, callback) {
     this.delay = delay;
-    
+
     // Ensure the timer is an HTML element or ID
     if (typeof timer === 'string' || timer instanceof String) {
       this.timer = document.getElementById(timer);
     } else {
       this.timer = timer;
     }
-    
+
     this.loop = loop;
     this.timeline = timeline;
     this.callback = callback;
     this.setOnFinishCallback();
-    
-    // Play the animation automatically after setting the timeline
-    setTimeout(() => this.play(), this.delay || 0);
+
+    // Remove the auto play from constructor
+    // setTimeout(() => this.play(), this.delay || 0);
   }
 
   /**
@@ -237,14 +237,14 @@ function createPlayer(
 
   // Create an Intersection Observer to trigger the play when the element comes into view
   const observer = new IntersectionObserver(
-    (entries) => {
+    (entries, observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           // Element has entered the viewport, start the animation
           player.play();
-        } else {
-          // Optionally, you can pause the animation when it leaves the viewport
-          player.pause();
+
+          // Optionally, unobserve after it plays the first time
+          observer.unobserve(entry.target);
         }
       });
     },
