@@ -1,4 +1,4 @@
-// V12
+// V13
 class Player {
   /**
    * @constructor
@@ -45,18 +45,14 @@ class Player {
   setupIntersectionObserver() {
     const timerElement = this.timer;
     if (!timerElement) {
-      console.error('Timer element not found.');
       return;
     }
 
     const observer = new IntersectionObserver(
       (entries, observer) => {
         entries.forEach((entry) => {
-          console.log('Intersection ratio:', entry.intersectionRatio);
-
           // Check if the element is fully visible
           if (entry.isIntersecting && entry.intersectionRatio === 1) {
-            console.log('Element is fully visible, playing animation');
             this.play();
 
             // Stop observing once the animation is triggered
