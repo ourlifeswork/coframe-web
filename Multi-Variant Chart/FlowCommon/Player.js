@@ -1,54 +1,35 @@
-// V22
+// V23
 
-// Function to animate the appearance of each .variant element in sequence
-function animateVariants() {
-  // Select all elements with the class .variant
-  const variants = document.querySelectorAll('.variant');
-
-  // Log to make sure the elements are being selected
-  console.log('Variants found:', variants.length);
-
-  if (variants.length === 0) {
-    console.error('No .variant elements found in the DOM');
-    return;
-  }
-
-  // Set initial opacity to 0 for all variants to hide them
-  variants.forEach((variant) => {
-    variant.style.opacity = '0';  // Set opacity to 0 to hide them initially
-  });
-
-  // Loop through each variant and apply a staggered delay
-  variants.forEach((variant, index) => {
-    // Log the index to ensure the loop works
-    console.log(`Animating variant ${index + 1}`);
-
-    // Delay each variant's animation by 250ms * index
-    setTimeout(() => {
-      variant.style.transition = 'opacity 0.5s ease'; // Add transition for fading
-      variant.style.opacity = '1'; // Fade in by setting opacity to 1
-    }, index * 250); // Each element appears 250ms after the last one
-  });
-}
-
-// Player class implementation
 class Player {
+  /**
+   * @constructor
+   *
+   * @param {Timeline} timeline
+   *  Animation played when the transition is triggered.
+   *
+   * @param {String} timer
+   *  The HTML Element or the HTML Element ID to be used for handling the timer (i.e. timing animation) of `self`.
+   *
+   * @param {Boolean} loop
+   *  This property specifies that the animation should repeat upon completion.
+   *
+   * @param {Boolean} delay
+   *  The number of milliseconds to delay the start of playback.
+   *
+   * @param {function: () -> Void} callback
+   * A callback function passed to the player that runs upon animation completion.
+   * This callback does not take in any parameters.
+   */
   constructor(timeline, timer, loop = false, delay, callback) {
     this.delay = delay;
-
+    
     // Ensure the timer is an HTML element or ID
     if (typeof timer === 'string' || timer instanceof String) {
       this.timer = document.getElementById(timer);
     } else {
       this.timer = timer;
     }
-
-    // Check if the timer element is found
-    if (!this.timer) {
-      console.error("Error: Timer element not found or invalid.");
-      return;
-    }
-
+    
     this.loop = loop;
     this.timeline = timeline;
     this.callback = callback;
@@ -58,10 +39,13 @@ class Player {
     this.setupIntersectionObserver();
   }
 
+  /**
+   * Sets up the IntersectionObserver to trigger the animation
+   * when the associated element is fully in view.
+   */
   setupIntersectionObserver() {
     const timerElement = this.timer;
     if (!timerElement) {
-      console.error("Error: Timer element not found.");
       return;
     }
 
@@ -86,77 +70,125 @@ class Player {
     observer.observe(timerElement);
   }
 
+  /**
+   * @return {Timeline}
+   * Returns the current timeline for `self`.
+   */
+  get timeline() {
+    return this._timeline;
+  }
+
+  /**
+   * @set
+   * Sets the timeline of `self` to `timeline`. When this variable is set, the player pauses playback then sets the new value. If the new value is `null` the current timing animation is removed, and default values are set in anticipation of a new timeline. If the new value is not `null` the timeline is prepped for playback.
+   *
+   * @param {Timeline} timeline
+   * The timeline to be controlled by `self`.
+   */
+  set timeline(timeline) {
+    this.cancelAnimations();
+
+    if (this._timeline != null) {
+      this.pause();
+    }
+
+    this._timeline = timeline;
+
+    if (this._timeline === null) {
+      this.timingAnimation = null;
+      this.currentTime = 0;
+      this.shouldPlay = false;
+    } else {
+      this.timingAnimation = this.timer.animate({}, this.timeline.duration + this.delay);
+      this.timingAnimation.currentTime = 0;
+      this.timingAnimation.pause();
+
+      this.timeline.loadFillImages();
+      this.timeline.loadSVGAnimations();
+      this.animations = this.timeline.createAllAnimations();
+
+      this.shouldPlay = true;
+      this.pause();
+      this.setOnFinishCallback();
+    }
+  }
+
+  /**
+   * @return {Number}
+   * Returns the duration of the `timeline` of `self`, or `0` if timeline is `null`.
+   */
+  get duration() {
+    return this.timeline === null ? 0 : this.timeline.duration;
+  }
+
+  /**
+   * @return {Number}
+   * Returns the current playback time of `self`, or `0` if `timeline` is `null`.
+   */
+  get currentTime() {
+    return this.timingAnimation === null ? 0 : this.timingAnimation.currentTime;
+  }
+
+  /**
+   * @set
+   * Sets the current playback time (in milliseconds) of `self`. This value is propagated to all animations in the current timeline.
+   *
+   * @param {Number} time
+   * A numeric value representing time in milliseconds.
+   */
+  set currentTime(time) {
+    if (this.timeline === null || this.timingAnimation === null) {
+      return;
+    }
+
+    this.animations.forEach((animation) => {
+      animation.currentTime = time;
+    });
+
+    this.timeline.allShapes.forEach((shape) => {
+      shape.setCurrentTime(time / 1000);
+    });
+
+    this.timingAnimation.currentTime = time;
+  }
+
+  /**
+   * Work around for Safari. When switching from one timeline to
+   * another Safari will jump to a random point in the first
+   * timeline unless the effect target of each animation is set to null.
+   */
+  cancelAnimations() {
+    if (this.animations === undefined || this.animations === null) { return; }
+    this.animations.forEach((animation) => {
+      animation.effect.target = null;
+    });
+    this.animations = [];
+  }
+
+  /**
+   * Plays the current timeline for `self`. If the player is currently playing, or the current timeline is `null` this function does nothing.
+   */
   play() {
-    // Ensure the timeline and animations are defined before playing
     if (this.timeline == null || this.isPlaying() === true) {
       return;
     }
 
-    // Initialize timingAnimation if it hasn't been initialized yet
-    if (!this.timingAnimation) {
-      this.initializeTimingAnimation();
-    }
-
-    // Check again if timingAnimation is defined after initialization
-    if (!this.timingAnimation) {
-      console.error("Error: timingAnimation is still undefined after initialization.");
-      return;
-    }
-
-    // Play the timing animation if it exists
     this.timingAnimation.play();
-
-    // Initialize the animations if they haven't been set yet
-    if (!this.animations || this.animations.length === 0) {
-      this.initializeAnimations();
-    }
-
-    // Check if animations are defined and not empty
-    if (!this.animations || this.animations.length === 0) {
-      console.error("Error: animations array is still undefined or empty after initialization.");
-      return;
-    }
-
-    // Play each animation in the array
     this.animations.forEach((animation) => {
       animation.play();
     });
 
-    // Unpause shapes in the timeline
     this.timeline.allShapes.forEach((shape) => {
       const t = shape.getCurrentTime() % this.timeline.duration;
       shape.setCurrentTime(t);
       shape.unpauseAnimations();
     });
-
-    // Trigger the staggered animation for the .variant elements **only after the animation begins**
-    animateVariants();  // Call the animateVariants function after the main animation starts
   }
 
-  initializeTimingAnimation() {
-    // Ensure the timer element exists and the timeline duration is valid
-    if (this.timer && this.timeline && this.timeline.duration) {
-      this.timingAnimation = this.timer.animate({}, this.timeline.duration + this.delay);
-      this.timingAnimation.currentTime = 0;
-      this.timingAnimation.pause();
-      console.log('Timing animation initialized successfully.');
-    } else {
-      console.error("Error: Unable to initialize timingAnimation. Timer or timeline is invalid.");
-    }
-  }
-
-  initializeAnimations() {
-    // Ensure that the timeline has the method createAllAnimations and returns valid animations
-    if (this.timeline && typeof this.timeline.createAllAnimations === 'function') {
-      this.animations = this.timeline.createAllAnimations();
-      if (!this.animations || this.animations.length === 0) {
-        console.error("Error: No animations created by timeline.");
-      }
-    } else {
-      console.error("Error: timeline does not have a createAllAnimations function or it returned no animations.");
-    }
-  }
-
+  /**
+   * @return {Boolean}
+   * Returns true if self is currently playing an animation and false otherwise.
+   */
   isPlaying() {
     if (this.timingAnimation == null) {
       return false;
@@ -164,6 +196,35 @@ class Player {
     return this.timingAnimation.playState === 'running';
   }
 
+  /**
+   * Pauses the animation being played by self.
+   */
+  pause() {
+    if (this.timeline === null || this.timingAnimation === null) {
+      return;
+    }
+
+    this.timingAnimation.pause();
+    this.animations.forEach((animation) => {
+      animation.pause();
+    });
+    this.timeline.allShapes.forEach((shape) => {
+      shape.pauseAnimations();
+    });
+  }
+
+  /**
+   * Stops the animation.
+   */
+  stop() {
+    this.shouldPlay = false;
+    this.pause();
+    this.currentTime = 0;
+  }
+
+  /**
+   * Sets the callback function that will be run at the end of each animation.
+   */
   setOnFinishCallback() {
     if (this.timingAnimation == null) {
       return;
@@ -175,22 +236,36 @@ class Player {
       } else {
         this.pause();
       }
-      if (typeof this.callback != undefined && this.callback != null) {
-        this.callback();
-      }
-
-      // Trigger the staggered animation for the .variant elements after the animation ends
-      animateVariants();
+      if (typeof this.callback != undefined && this.callback != null) this.callback();
     };
+  }
+
+  /**
+   * Converts a numeric value representing a time in milliseconds into a string.
+   */
+  static convertTimeToString(milliseconds) {
+    const date = new Date(null);
+    date.setMilliseconds(milliseconds);
+    return date.toISOString().substr(14, 8);
   }
 }
 
-// Example function to create a Player instance (if needed)
-function createPlayer(Timeline, timerID, loop, delay, callback, rootID, elementID, resourcesPath) {
+// eslint-disable-next-line no-unused-vars
+function createPlayer(
+  Timeline,
+  timerID,
+  loop,
+  delay,
+  callback,
+  rootID,
+  elementID,
+  resourcesPath
+) {
   const shadowDomContainer = document.getElementById(rootID);
   const { shadowRoot } = shadowDomContainer;
   const timer = shadowRoot.getElementById(timerID);
   const forwardTimeline = new Timeline(shadowRoot, elementID, resourcesPath);
-
+  
+  // Create a new Player instance
   return new Player(forwardTimeline, timer, loop, delay, callback);
 }
