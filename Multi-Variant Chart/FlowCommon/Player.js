@@ -1,17 +1,23 @@
-// V19
+// V20
 
 // Function to animate the appearance of each .variant element in sequence
 function animateVariants() {
   // Select all elements with the class .variant
   const variants = document.querySelectorAll('.variant');
 
+  // Log to make sure the elements are being selected
+  console.log('Variants found:', variants.length);
+
   // Set initial opacity to 0 for all variants to hide them
   variants.forEach((variant) => {
-    variant.style.opacity = '0';
+    variant.style.opacity = '0';  // Set opacity to 0 to hide them initially
   });
 
   // Loop through each variant and apply a staggered delay
   variants.forEach((variant, index) => {
+    // Log the index to ensure the loop works
+    console.log(`Animating variant ${index + 1}`);
+
     // Delay each variant's animation by 250ms * index
     setTimeout(() => {
       variant.style.transition = 'opacity 0.5s ease'; // Add transition for fading
@@ -119,7 +125,7 @@ class Player {
     });
 
     // Trigger the staggered animation for the .variant elements
-    animateVariants();
+    animateVariants();  // Call the animateVariants function
   }
 
   initializeTimingAnimation() {
