@@ -1,4 +1,4 @@
-// V9
+// V10
 class Player {
   /**
    * @constructor
@@ -21,20 +21,20 @@ class Player {
    */
   constructor(timeline, timer, loop = false, delay, callback) {
     this.delay = delay;
-  
+    
     // Ensure the timer is an HTML element or ID
     if (typeof timer === 'string' || timer instanceof String) {
       this.timer = document.getElementById(timer);
     } else {
       this.timer = timer;
     }
-  
+    
     this.loop = loop;
     this.timeline = timeline;
     this.callback = callback;
     this.setOnFinishCallback();
-  
-    // Remove or comment out this line to stop auto play on load
+    
+    // Remove the autoplay to ensure it only plays when fully in view
     // setTimeout(() => this.play(), this.delay || 0);
   }
 
@@ -52,7 +52,6 @@ class Player {
    *
    * @param {Timeline} timeline
    * The timeline to be controlled by `self`.
-   *
    */
   set timeline(timeline) {
     this.cancelAnimations();
@@ -236,52 +235,46 @@ function createPlayer(
   const forwardTimeline = new Timeline(shadowRoot, elementID, resourcesPath);
   const player = new Player(forwardTimeline, timer, loop, delay, callback);
 
-  // Create an Intersection Observer to trigger the play when the .impact__chart-inner-container element is fully in view
-  const impactElement = document.querySelector('.impact__chart-inner-container');
-  
-  // Helper function to check if the element is fully in view
-  function isFullyInView(element) {
-    const rect = element.getBoundingClientRect();
-    const windowHeight = (window.innerHeight || document.documentElement.clientHeight);
-    const windowWidth = (window.innerWidth || document.documentElement.clientWidth);
-  
-    // Log the dimensions and position of the element to ensure this logic works
-    console.log('Bounding rect:', rect);
-  
-    // Check if the element is fully in the viewport (both vertically and horizontally)
-    return (
-      rect.top >= 0 &&
-      rect.left >= 0 &&
-      rect.bottom <= windowHeight &&
-      rect.right <= windowWidth
-    );
-  }
-  
-  const observer = new IntersectionObserver(
-    (entries, observer) => {
-      entries.forEach((entry) => {
-        // Log to see the intersection ratio and if it's being triggered
-        console.log('Intersection ratio:', entry.intersectionRatio);
-  
-        // Check if the element is fully visible both via the intersection observer and with a bounding box check
-        if (entry.isIntersecting && entry.intersectionRatio === 1 && isFullyInView(entry.target)) {
-          console.log('Element is fully visible, playing animation');
-  
-          // Element is fully in view, start the animation
-          player.play();
-  
-          // Unobserve the element after triggering play so it doesn't keep checking
-          observer.unobserve(entry.target);
+  // Wait for the DOM to fully load before running the observer
+  document.addEventListener('DOMContentLoaded', () => {
+    // Select the .impact__chart-inner-container element
+    const impactElement = document.querySelector('.impact__chart-inner-container');
+    
+    // Log whether the element is found in the DOM
+    console.log('Impact Element:', impactElement); // Check if the element exists
+    
+    if (!impactElement) {
+      // If the element isn't found, log an error
+      console.error('.impact__chart-inner-container not found in the DOM.');
+    } else {
+      // Create an Intersection Observer to trigger the play when the element is fully in view
+      const observer = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach((entry) => {
+            // Log the intersection ratio to see when the element becomes visible
+            console.log('Intersection ratio:', entry.intersectionRatio);
+
+            // Check if the element is fully visible (intersectionRatio === 1)
+            if (entry.isIntersecting && entry.intersectionRatio === 1) {
+              console.log('Element is fully visible, playing animation');
+
+              // Element is fully in view, start the animation
+              player.play();
+
+              // Unobserve the element after triggering play so it doesn't keep checking
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 1.0, // 100% of the element needs to be visible to trigger the play
         }
-      });
-    },
-    {
-      threshold: 1.0, // 100% of the element needs to be visible to trigger the play
+      );
+
+      // Start observing the .impact__chart-inner-container element
+      observer.observe(impactElement);
     }
-  );
-  
-  // Start observing the .impact__chart-inner-container element
-  observer.observe(impactElement);
+  });
 
   return player;
 }
