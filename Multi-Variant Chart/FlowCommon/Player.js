@@ -1,4 +1,4 @@
-// V6
+// V7
 class Player {
   /**
    * @constructor
@@ -236,17 +236,33 @@ function createPlayer(
   const forwardTimeline = new Timeline(shadowRoot, elementID, resourcesPath);
   const player = new Player(forwardTimeline, timer, loop, delay, callback);
 
-  // Create an Intersection Observer to trigger the play when the .impact element is 80% in view
+   // Create an Intersection Observer to trigger the play when the .impact__chart-inner-container element is fully in view
   const impactElement = document.querySelector('.impact__chart-inner-container');
-
+  
+  // Helper function to check if the element is fully in view
+  function isFullyInView(element) {
+    const rect = element.getBoundingClientRect();
+    const windowHeight = (window.innerHeight || document.documentElement.clientHeight);
+    const windowWidth = (window.innerWidth || document.documentElement.clientWidth);
+  
+    // Check if the element is fully in the viewport (both vertically and horizontally)
+    return (
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.bottom <= windowHeight &&
+      rect.right <= windowWidth
+    );
+  }
+  
   const observer = new IntersectionObserver(
     (entries, observer) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting && entry.intersectionRatio === 1) {
-          // Element is fully in view (100%), start the animation
+        // Check if the element is fully visible both via the intersection observer and with a bounding box check
+        if (entry.isIntersecting && entry.intersectionRatio === 1 && isFullyInView(entry.target)) {
+          // Element is fully in view, start the animation
           player.play();
   
-          // Optionally, unobserve the element after triggering play so it doesn't keep checking
+          // Unobserve the element after triggering play so it doesn't keep checking
           observer.unobserve(entry.target);
         }
       });
@@ -256,7 +272,7 @@ function createPlayer(
     }
   );
   
-  // Start observing the .impact element
+  // Start observing the .impact__chart-inner-container element
   observer.observe(impactElement);
 
   return player;
