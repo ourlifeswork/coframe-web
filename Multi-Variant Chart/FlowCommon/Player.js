@@ -1,4 +1,4 @@
-// V5
+// V6
 class Player {
   /**
    * @constructor
@@ -238,12 +238,12 @@ function createPlayer(
 
   // Create an Intersection Observer to trigger the play when the .impact element is 80% in view
   const impactElement = document.querySelector('.impact__chart-inner-container');
-  
+
   const observer = new IntersectionObserver(
     (entries, observer) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          // Element is at least 80% in view, start the animation
+        if (entry.isIntersecting && entry.intersectionRatio === 1) {
+          // Element is fully in view (100%), start the animation
           player.play();
   
           // Optionally, unobserve the element after triggering play so it doesn't keep checking
@@ -252,7 +252,7 @@ function createPlayer(
       });
     },
     {
-      threshold: 0.8, // 80% of the element needs to be visible to trigger the play
+      threshold: 1.0, // 100% of the element needs to be visible to trigger the play
     }
   );
   
