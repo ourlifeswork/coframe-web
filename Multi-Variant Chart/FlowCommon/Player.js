@@ -20,7 +20,7 @@ class Player {
 	 * A callback function passed to the player that runs upon animation completion.
 	 * This callback does not take in any parameters.
 	 */
-	constructor(timeline, timer, loop = false, delay, callback, playbackRate = 0.5) {
+	constructor(timeline, timer, loop = false, delay, playbackRate = 0.5, callback) {
 		this.delay = delay;
 
 		// Ensure the timer is an HTML element or ID
@@ -100,6 +100,7 @@ class Player {
 			this.shouldPlay = false;
 		} else {
 			this.timingAnimation = this.timer.animate({}, this.timeline.duration + this.delay);
+			console.log('Playback Rate:', this.playbackRate);
 			this.timingAnimation.playbackRate = this.playbackRate; // Set playback rate
 			this.timingAnimation.currentTime = 0;
 			this.timingAnimation.pause();
@@ -297,5 +298,5 @@ function createPlayer(
 	const forwardTimeline = new Timeline(shadowRoot, elementID, resourcesPath);
 
 	// Create a new Player instance
-	return new Player(forwardTimeline, timer, loop, delay, callback);
+	return new Player(forwardTimeline, timer, loop, delay, 0.5, callback);
 }
