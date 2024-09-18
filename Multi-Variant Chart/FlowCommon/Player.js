@@ -1,4 +1,4 @@
-// V26
+// V27
 
 class Player {
   /**
@@ -175,6 +175,19 @@ class Player {
 
     this.timingAnimation.play();
     this.animations.forEach((animation) => {
+      const playbackRate = 0.25;
+
+      // Calculate new duration based on the original timeline duration
+      const originalDuration = this.timeline.duration;  // Assume this holds the original duration
+      const adjustedDuration = originalDuration / playbackRate;  // Extend duration
+
+      // Set the new playback rate
+      animation.playbackRate = playbackRate;
+
+      // Adjust the duration to account for the slower speed
+      animation.effect.updateTiming({ duration: adjustedDuration });
+
+      // Ensure the animation is playing
       animation.play();
     });
 
