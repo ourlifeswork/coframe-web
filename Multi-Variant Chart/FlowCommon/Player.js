@@ -1,4 +1,4 @@
-// V27
+// V28
 
 class Player {
   /**
@@ -22,6 +22,7 @@ class Player {
    */
   constructor(timeline, timer, loop = false, delay, callback) {
     this.delay = delay;
+    this.playbackRate = 0.5;
     
     // Ensure the timer is an HTML element or ID
     if (typeof timer === 'string' || timer instanceof String) {
@@ -175,19 +176,11 @@ class Player {
 
     this.timingAnimation.play();
     this.animations.forEach((animation) => {
-      const playbackRate = 0.25;
-
-      // Calculate new duration based on the original timeline duration
-      const originalDuration = this.timeline.duration;  // Assume this holds the original duration
-      const adjustedDuration = originalDuration / playbackRate;  // Extend duration
-
+      const playbackRate = 0.5;
+      
       // Set the new playback rate
       animation.playbackRate = playbackRate;
-
-      // Adjust the duration to account for the slower speed
-      animation.effect.updateTiming({ duration: adjustedDuration });
-
-      // Ensure the animation is playing
+      
       animation.play();
     });
 
