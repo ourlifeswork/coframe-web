@@ -1,4 +1,4 @@
-// V7
+// V8
 class Player {
   /**
    * @constructor
@@ -21,21 +21,21 @@ class Player {
    */
   constructor(timeline, timer, loop = false, delay, callback) {
     this.delay = delay;
-    
+  
     // Ensure the timer is an HTML element or ID
     if (typeof timer === 'string' || timer instanceof String) {
       this.timer = document.getElementById(timer);
     } else {
       this.timer = timer;
     }
-    
+  
     this.loop = loop;
     this.timeline = timeline;
     this.callback = callback;
     this.setOnFinishCallback();
-    
-    // Play the animation automatically after setting the timeline
-    setTimeout(() => this.play(), this.delay || 0);
+  
+    // Remove or comment out this line to stop auto play on load
+    // setTimeout(() => this.play(), this.delay || 0);
   }
 
   /**
