@@ -1,4 +1,4 @@
-// V16
+// V17
 
 // Function to animate the appearance of each .variant element in sequence
 function animateVariants() {
@@ -31,6 +31,12 @@ class Player {
       this.timer = timer;
     }
 
+    // Check if the timer element is found
+    if (!this.timer) {
+      console.error("Error: Timer element not found or invalid.");
+      return;
+    }
+
     this.loop = loop;
     this.timeline = timeline;
     this.callback = callback;
@@ -43,6 +49,7 @@ class Player {
   setupIntersectionObserver() {
     const timerElement = this.timer;
     if (!timerElement) {
+      console.error("Error: Timer element not found.");
       return;
     }
 
@@ -75,7 +82,12 @@ class Player {
 
     // Check if timingAnimation is defined
     if (!this.timingAnimation) {
-      console.error("Error: timingAnimation is undefined");
+      this.initializeTimingAnimation(); // Try to initialize it
+    }
+
+    // Check again if timingAnimation is defined after initialization
+    if (!this.timingAnimation) {
+      console.error("Error: timingAnimation is still undefined after initialization.");
       return;
     }
 
@@ -84,7 +96,7 @@ class Player {
 
     // Check if animations are defined
     if (!this.animations || this.animations.length === 0) {
-      console.error("Error: animations array is undefined or empty");
+      console.error("Error: animations array is undefined or empty.");
       return;
     }
 
@@ -102,6 +114,17 @@ class Player {
 
     // Trigger the staggered animation for the .variant elements
     animateVariants();
+  }
+
+  initializeTimingAnimation() {
+    // Ensure the timer element exists and the timeline duration is valid
+    if (this.timer && this.timeline && this.timeline.duration) {
+      this.timingAnimation = this.timer.animate({}, this.timeline.duration + this.delay);
+      this.timingAnimation.currentTime = 0;
+      this.timingAnimation.pause();
+    } else {
+      console.error("Error: Unable to initialize timingAnimation. Timer or timeline is invalid.");
+    }
   }
 
   isPlaying() {
