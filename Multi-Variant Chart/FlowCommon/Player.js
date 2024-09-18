@@ -1,4 +1,4 @@
-// V23
+// V24
 
 class Player {
   /**
@@ -183,6 +183,9 @@ class Player {
       shape.setCurrentTime(t);
       shape.unpauseAnimations();
     });
+
+    // Send a message to the parent window that the animation has started
+    window.parent.postMessage({ type: 'chartAnimationStart' }, '*');
   }
 
   /**
@@ -211,6 +214,9 @@ class Player {
     this.timeline.allShapes.forEach((shape) => {
       shape.pauseAnimations();
     });
+
+    // Send a message to the parent window that the animation has paused
+    window.parent.postMessage({ type: 'chartAnimationPause' }, '*');
   }
 
   /**
@@ -220,6 +226,9 @@ class Player {
     this.shouldPlay = false;
     this.pause();
     this.currentTime = 0;
+
+    // Send a message to the parent window that the animation has stopped
+    window.parent.postMessage({ type: 'chartAnimationStop' }, '*');
   }
 
   /**
@@ -235,6 +244,9 @@ class Player {
         this.play(); // Automatically replay on finish
       } else {
         this.pause();
+
+        // Send a message to the parent window that the animation has stopped
+        window.parent.postMessage({ type: 'chartAnimationStop' }, '*');
       }
       if (typeof this.callback != undefined && this.callback != null) this.callback();
     };
