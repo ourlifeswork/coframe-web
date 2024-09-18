@@ -1,4 +1,4 @@
-// V14
+// V15
 
 // Function to animate the appearance of each .variant element in sequence
 function animateVariants() {
@@ -68,15 +68,32 @@ class Player {
   }
 
   play() {
+    // Ensure the timeline and animations are defined before playing
     if (this.timeline == null || this.isPlaying() === true) {
       return;
     }
 
+    // Check if timingAnimation is defined
+    if (!this.timingAnimation) {
+      console.error("Error: timingAnimation is undefined");
+      return;
+    }
+
+    // Play the timing animation if it exists
     this.timingAnimation.play();
+
+    // Check if animations are defined
+    if (!this.animations || this.animations.length === 0) {
+      console.error("Error: animations array is undefined or empty");
+      return;
+    }
+
+    // Play each animation in the array
     this.animations.forEach((animation) => {
       animation.play();
     });
 
+    // Unpause shapes in the timeline
     this.timeline.allShapes.forEach((shape) => {
       const t = shape.getCurrentTime() % this.timeline.duration;
       shape.setCurrentTime(t);
