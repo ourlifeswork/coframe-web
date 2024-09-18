@@ -1,4 +1,4 @@
-// V21
+// V22
 
 // Function to animate the appearance of each .variant element in sequence
 function animateVariants() {
@@ -92,9 +92,9 @@ class Player {
       return;
     }
 
-    // Check if timingAnimation is defined
+    // Initialize timingAnimation if it hasn't been initialized yet
     if (!this.timingAnimation) {
-      this.initializeTimingAnimation(); // Try to initialize it
+      this.initializeTimingAnimation();
     }
 
     // Check again if timingAnimation is defined after initialization
@@ -139,6 +139,7 @@ class Player {
       this.timingAnimation = this.timer.animate({}, this.timeline.duration + this.delay);
       this.timingAnimation.currentTime = 0;
       this.timingAnimation.pause();
+      console.log('Timing animation initialized successfully.');
     } else {
       console.error("Error: Unable to initialize timingAnimation. Timer or timeline is invalid.");
     }
