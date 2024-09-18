@@ -1,3 +1,5 @@
+// V2
+
 /**
  * A `Driver` is a user-interface for creating a Player and controlling its playback.
  * In addition to passing a `Timeline` and a `Timer` as you would with a `Player`, you must also provide DOM elements for the following UI components:
@@ -15,6 +17,12 @@ class Driver {
     this.playPauseButton = document.getElementById(playPauseID);
     this.loopButton = document.getElementById(loopID);
     this.timer = timer;
+
+    // Ensure elements exist
+    if (!this.slider || !this.animationTime || !this.playPauseButton || !this.loopButton) {
+        console.error('One or more DOM elements are missing');
+        return;
+    }
 
     // Create a player
     this.player = new Player(timeline, timer, false, 0);
@@ -46,15 +54,17 @@ class Driver {
 
   // Sets the current time for the player, updates the position of the slider
   set currentTime(time) {
-    this.slider.value = time / this.duration;
+    if (this.slider) {
+      this.slider.value = time / this.duration;
+    }
     this.player.currentTime = time;
   }
 
-  // Updates the position of the timer if the player is currenty playing
+  // Updates the position of the timer if the player is currently playing
   updateSliderIfAnimating() {
     // The player could be one of `idle`, `running`, `paused`, or `finished`
-    // We want to update in any stae other than `running`
-    if (this.player.timingAnimation.playState != "paused") {
+    // We want to update in any state other than `paused`
+    if (this.player.timingAnimation && this.player.timingAnimation.playState !== "paused") {
       this.sliderValue = this.currentTime / this.timeline.duration;
       this.setAnimationTimeLabels(this.currentTime);
     }
@@ -168,7 +178,11 @@ class Driver {
 
   // Sets the current value of the slider
   set sliderValue(value) {
-    this.slider.value = value;
+    if (this.slider) {
+      this.slider.value = value;
+    } else {
+      console.error('Slider element is missing');
+    }
   }
 
   //---------------
