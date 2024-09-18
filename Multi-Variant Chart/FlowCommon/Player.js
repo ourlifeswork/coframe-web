@@ -1,4 +1,4 @@
-// V3
+// V4
 class Player {
   /**
    * @constructor
@@ -236,26 +236,28 @@ function createPlayer(
   const forwardTimeline = new Timeline(shadowRoot, elementID, resourcesPath);
   const player = new Player(forwardTimeline, timer, loop, delay, callback);
 
-  // Create an Intersection Observer to trigger the play when the element comes into view
+  // Create an Intersection Observer to trigger the play when the .impact element is 80% in view
+  const impactElement = document.querySelector('.impact');
+  
   const observer = new IntersectionObserver(
-    (entries) => {
+    (entries, observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          // Element has entered the viewport, start the animation
+          // Element is at least 80% in view, start the animation
           player.play();
-        } else {
-          // Optionally, you can pause the animation when it leaves the viewport
-          player.pause();
+  
+          // Optionally, unobserve the element after triggering play so it doesn't keep checking
+          observer.unobserve(entry.target);
         }
       });
     },
     {
-      threshold: 1, // 50% of the element needs to be visible to trigger the play
+      threshold: 0.8, // 80% of the element needs to be visible to trigger the play
     }
   );
-
-  // Start observing the timer element
-  observer.observe(timer);
+  
+  // Start observing the .impact element
+  observer.observe(impactElement);
 
   return player;
 }
