@@ -20,21 +20,21 @@ class Player {
    */
   constructor(timeline, timer, loop = false, delay, callback) {
     this.delay = delay;
-
+    
     // Ensure the timer is an HTML element or ID
     if (typeof timer === 'string' || timer instanceof String) {
       this.timer = document.getElementById(timer);
     } else {
       this.timer = timer;
     }
-
+    
     this.loop = loop;
     this.timeline = timeline;
     this.callback = callback;
     this.setOnFinishCallback();
-
-    // Remove the auto play from constructor
-    // setTimeout(() => this.play(), this.delay || 0);
+    
+    // Play the animation automatically after setting the timeline
+    setTimeout(() => this.play(), this.delay || 0);
   }
 
   /**
@@ -227,34 +227,10 @@ function createPlayer(
   callback,
   rootID,
   elementID,
-  resourcesPath
-) {
+  resourcesPath) {
   const shadowDomContainer = document.getElementById(rootID);
   const { shadowRoot } = shadowDomContainer;
   const timer = shadowRoot.getElementById(timerID);
   const forwardTimeline = new Timeline(shadowRoot, elementID, resourcesPath);
-  const player = new Player(forwardTimeline, timer, loop, delay, callback);
-
-  // Create an Intersection Observer to trigger the play when the element comes into view
-  const observer = new IntersectionObserver(
-    (entries, observer) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          // Element has entered the viewport, start the animation
-          player.play();
-
-          // Optionally, unobserve after it plays the first time
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    {
-      threshold: 0.5, // 50% of the element needs to be visible to trigger the play
-    }
-  );
-
-  // Start observing the timer element
-  observer.observe(timer);
-
-  return player;
+  return new Player(forwardTimeline, timer, loop, delay, callback);
 }
