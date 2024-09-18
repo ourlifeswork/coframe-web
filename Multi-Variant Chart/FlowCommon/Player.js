@@ -1,4 +1,4 @@
-// V11
+// V12
 class Player {
   /**
    * @constructor
@@ -33,9 +33,44 @@ class Player {
     this.timeline = timeline;
     this.callback = callback;
     this.setOnFinishCallback();
-    
-    // Remove the autoplay to ensure it only plays when fully in view
-    // setTimeout(() => this.play(), this.delay || 0);
+
+    // Automatically wait for the element to be fully in view before playing
+    this.setupIntersectionObserver();
+  }
+
+  /**
+   * Sets up the IntersectionObserver to trigger the animation
+   * when the associated element is fully in view.
+   */
+  setupIntersectionObserver() {
+    const timerElement = this.timer;
+    if (!timerElement) {
+      console.error('Timer element not found.');
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          console.log('Intersection ratio:', entry.intersectionRatio);
+
+          // Check if the element is fully visible
+          if (entry.isIntersecting && entry.intersectionRatio === 1) {
+            console.log('Element is fully visible, playing animation');
+            this.play();
+
+            // Stop observing once the animation is triggered
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 1.0, // 100% visibility required to trigger the play
+      }
+    );
+
+    // Observe the timer element
+    observer.observe(timerElement);
   }
 
   /**
@@ -233,48 +268,7 @@ function createPlayer(
   const { shadowRoot } = shadowDomContainer;
   const timer = shadowRoot.getElementById(timerID);
   const forwardTimeline = new Timeline(shadowRoot, elementID, resourcesPath);
-  const player = new Player(forwardTimeline, timer, loop, delay, callback);
-
-  // Wait for the DOM to fully load before running the observer
-  document.addEventListener('DOMContentLoaded', () => {
-    // Select the .impact__chart-inner-container element
-    const impactElement = document.querySelector('.impact__chart-inner-container');
-    
-    // Log whether the element is found in the DOM
-    console.log('Impact Element:', impactElement); // Check if the element exists
-    
-    if (!impactElement) {
-      // If the element isn't found, log an error
-      console.error('.impact__chart-inner-container not found in the DOM.');
-    } else {
-      // Create an Intersection Observer to trigger the play when the element is fully in view
-      const observer = new IntersectionObserver(
-        (entries, observer) => {
-          entries.forEach((entry) => {
-            // Log the intersection ratio to see when the element becomes visible
-            console.log('Intersection ratio:', entry.intersectionRatio);
-
-            // Check if the element is fully visible (intersectionRatio === 1)
-            if (entry.isIntersecting && entry.intersectionRatio === 1) {
-              console.log('Element is fully visible, playing animation');
-
-              // Element is fully in view, start the animation
-              player.play();
-
-              // Unobserve the element after triggering play so it doesn't keep checking
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        {
-          threshold: 1.0, // 100% of the element needs to be visible to trigger the play
-        }
-      );
-
-      // Start observing the .impact__chart-inner-container element
-      observer.observe(impactElement);
-    }
-  });
-
-  return player;
+  
+  // Create a new Player instance
+  return new Player(forwardTimeline, timer, loop, delay, callback);
 }
