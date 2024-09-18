@@ -1,4 +1,4 @@
-// V8
+// V9
 class Player {
   /**
    * @constructor
@@ -236,7 +236,7 @@ function createPlayer(
   const forwardTimeline = new Timeline(shadowRoot, elementID, resourcesPath);
   const player = new Player(forwardTimeline, timer, loop, delay, callback);
 
-   // Create an Intersection Observer to trigger the play when the .impact__chart-inner-container element is fully in view
+  // Create an Intersection Observer to trigger the play when the .impact__chart-inner-container element is fully in view
   const impactElement = document.querySelector('.impact__chart-inner-container');
   
   // Helper function to check if the element is fully in view
@@ -244,6 +244,9 @@ function createPlayer(
     const rect = element.getBoundingClientRect();
     const windowHeight = (window.innerHeight || document.documentElement.clientHeight);
     const windowWidth = (window.innerWidth || document.documentElement.clientWidth);
+  
+    // Log the dimensions and position of the element to ensure this logic works
+    console.log('Bounding rect:', rect);
   
     // Check if the element is fully in the viewport (both vertically and horizontally)
     return (
@@ -257,8 +260,13 @@ function createPlayer(
   const observer = new IntersectionObserver(
     (entries, observer) => {
       entries.forEach((entry) => {
+        // Log to see the intersection ratio and if it's being triggered
+        console.log('Intersection ratio:', entry.intersectionRatio);
+  
         // Check if the element is fully visible both via the intersection observer and with a bounding box check
         if (entry.isIntersecting && entry.intersectionRatio === 1 && isFullyInView(entry.target)) {
+          console.log('Element is fully visible, playing animation');
+  
           // Element is fully in view, start the animation
           player.play();
   
