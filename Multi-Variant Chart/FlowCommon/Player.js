@@ -1,283 +1,301 @@
-// V24
+// V25
 
 class Player {
-  /**
-   * @constructor
-   *
-   * @param {Timeline} timeline
-   *  Animation played when the transition is triggered.
-   *
-   * @param {String} timer
-   *  The HTML Element or the HTML Element ID to be used for handling the timer (i.e. timing animation) of `self`.
-   *
-   * @param {Boolean} loop
-   *  This property specifies that the animation should repeat upon completion.
-   *
-   * @param {Boolean} delay
-   *  The number of milliseconds to delay the start of playback.
-   *
-   * @param {function: () -> Void} callback
-   * A callback function passed to the player that runs upon animation completion.
-   * This callback does not take in any parameters.
-   */
-  constructor(timeline, timer, loop = false, delay, callback) {
-    this.delay = delay;
-    
-    // Ensure the timer is an HTML element or ID
-    if (typeof timer === 'string' || timer instanceof String) {
-      this.timer = document.getElementById(timer);
-    } else {
-      this.timer = timer;
-    }
-    
-    this.loop = loop;
-    this.timeline = timeline;
-    this.callback = callback;
-    this.setOnFinishCallback();
+	/**
+	 * @constructor
+	 *
+	 * @param {Timeline} timeline
+	 *  Animation played when the transition is triggered.
+	 *
+	 * @param {String} timer
+	 *  The HTML Element or the HTML Element ID to be used for handling the timer (i.e. timing animation) of `self`.
+	 *
+	 * @param {Boolean} loop
+	 *  This property specifies that the animation should repeat upon completion.
+	 *
+	 * @param {Boolean} delay
+	 *  The number of milliseconds to delay the start of playback.
+	 *
+	 * @param {function: () -> Void} callback
+	 * A callback function passed to the player that runs upon animation completion.
+	 * This callback does not take in any parameters.
+	 */
+	constructor(timeline, timer, loop = false, delay, callback, playbackRate = 0.5) {
+		this.delay = delay;
 
-    // Automatically wait for the element to be fully in view before playing
-    this.setupIntersectionObserver();
-  }
+		// Ensure the timer is an HTML element or ID
+		if (typeof timer === 'string' || timer instanceof String) {
+			this.timer = document.getElementById(timer);
+		} else {
+			this.timer = timer;
+		}
 
-  /**
-   * Sets up the IntersectionObserver to trigger the animation
-   * when the associated element is fully in view.
-   */
-  setupIntersectionObserver() {
-    const timerElement = this.timer;
-    if (!timerElement) {
-      return;
-    }
+		this.loop = loop;
+		this.timeline = timeline;
+		this.callback = callback;
+		this.playbackRate = playbackRate;
+		this.setOnFinishCallback();
 
-    const observer = new IntersectionObserver(
-      (entries, observer) => {
-        entries.forEach((entry) => {
-          // Check if the element is fully visible
-          if (entry.isIntersecting && entry.intersectionRatio === 1) {
-            this.play();
+		// Automatically wait for the element to be fully in view before playing
+		this.setupIntersectionObserver();
+	}
 
-            // Stop observing once the animation is triggered
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        threshold: 1.0, // 100% visibility required to trigger the play
-      }
-    );
+	/**
+	 * Sets up the IntersectionObserver to trigger the animation
+	 * when the associated element is fully in view.
+	 */
+	setupIntersectionObserver() {
+		const timerElement = this.timer;
+		if (!timerElement) {
+			return;
+		}
 
-    // Observe the timer element
-    observer.observe(timerElement);
-  }
+		const observer = new IntersectionObserver(
+			(entries, observer) => {
+				entries.forEach((entry) => {
+					// Check if the element is fully visible
+					if (entry.isIntersecting && entry.intersectionRatio === 1) {
+						this.play();
 
-  /**
-   * @return {Timeline}
-   * Returns the current timeline for `self`.
-   */
-  get timeline() {
-    return this._timeline;
-  }
+						// Stop observing once the animation is triggered
+						observer.unobserve(entry.target);
+					}
+				});
+			}, {
+				threshold: 1.0, // 100% visibility required to trigger the play
+			}
+		);
 
-  /**
-   * @set
-   * Sets the timeline of `self` to `timeline`. When this variable is set, the player pauses playback then sets the new value. If the new value is `null` the current timing animation is removed, and default values are set in anticipation of a new timeline. If the new value is not `null` the timeline is prepped for playback.
-   *
-   * @param {Timeline} timeline
-   * The timeline to be controlled by `self`.
-   */
-  set timeline(timeline) {
-    this.cancelAnimations();
+		// Observe the timer element
+		observer.observe(timerElement);
+	}
 
-    if (this._timeline != null) {
-      this.pause();
-    }
+	/**
+	 * @return {Timeline}
+	 * Returns the current timeline for `self`.
+	 */
+	get timeline() {
+		return this._timeline;
+	}
 
-    this._timeline = timeline;
+	/**
+	 * @set
+	 * Sets the timeline of `self` to `timeline`. When this variable is set, the player pauses playback then sets the new value. If the new value is `null` the current timing animation is removed, and default values are set in anticipation of a new timeline. If the new value is not `null` the timeline is prepped for playback.
+	 *
+	 * @param {Timeline} timeline
+	 * The timeline to be controlled by `self`.
+	 */
+	set timeline(timeline) {
+		this.cancelAnimations();
 
-    if (this._timeline === null) {
-      this.timingAnimation = null;
-      this.currentTime = 0;
-      this.shouldPlay = false;
-    } else {
-      this.timingAnimation = this.timer.animate({}, this.timeline.duration + this.delay);
-      this.timingAnimation.currentTime = 0;
-      this.timingAnimation.pause();
+		if (this._timeline != null) {
+			this.pause();
+		}
 
-      this.timeline.loadFillImages();
-      this.timeline.loadSVGAnimations();
-      this.animations = this.timeline.createAllAnimations();
+		this._timeline = timeline;
 
-      this.shouldPlay = true;
-      this.pause();
-      this.setOnFinishCallback();
-    }
-  }
+		if (this._timeline === null) {
+			this.timingAnimation = null;
+			this.currentTime = 0;
+			this.shouldPlay = false;
+		} else {
+			this.timingAnimation = this.timer.animate({}, this.timeline.duration + this.delay);
+			this.timingAnimation.playbackRate = this.playbackRate; // Set playback rate
+			this.timingAnimation.currentTime = 0;
+			this.timingAnimation.pause();
 
-  /**
-   * @return {Number}
-   * Returns the duration of the `timeline` of `self`, or `0` if timeline is `null`.
-   */
-  get duration() {
-    return this.timeline === null ? 0 : this.timeline.duration;
-  }
+			this.timeline.loadFillImages();
+			this.timeline.loadSVGAnimations();
+			this.animations = this.timeline.createAllAnimations();
 
-  /**
-   * @return {Number}
-   * Returns the current playback time of `self`, or `0` if `timeline` is `null`.
-   */
-  get currentTime() {
-    return this.timingAnimation === null ? 0 : this.timingAnimation.currentTime;
-  }
+			// Set playback rate for all animations
+			this.animations.forEach((animation) => {
+				animation.playbackRate = this.playbackRate;
+			});
 
-  /**
-   * @set
-   * Sets the current playback time (in milliseconds) of `self`. This value is propagated to all animations in the current timeline.
-   *
-   * @param {Number} time
-   * A numeric value representing time in milliseconds.
-   */
-  set currentTime(time) {
-    if (this.timeline === null || this.timingAnimation === null) {
-      return;
-    }
+			this.shouldPlay = true;
+			this.pause();
+			this.setOnFinishCallback();
+		}
+	}
 
-    this.animations.forEach((animation) => {
-      animation.currentTime = time;
-    });
+	/**
+	 * @return {Number}
+	 * Returns the duration of the `timeline` of `self`, or `0` if timeline is `null`.
+	 */
+	get duration() {
+		return this.timeline === null ? 0 : this.timeline.duration;
+	}
 
-    this.timeline.allShapes.forEach((shape) => {
-      shape.setCurrentTime(time / 1000);
-    });
+	/**
+	 * @return {Number}
+	 * Returns the current playback time of `self`, or `0` if `timeline` is `null`.
+	 */
+	get currentTime() {
+		return this.timingAnimation === null ? 0 : this.timingAnimation.currentTime;
+	}
 
-    this.timingAnimation.currentTime = time;
-  }
+	/**
+	 * @set
+	 * Sets the current playback time (in milliseconds) of `self`. This value is propagated to all animations in the current timeline.
+	 *
+	 * @param {Number} time
+	 * A numeric value representing time in milliseconds.
+	 */
+	set currentTime(time) {
+		if (this.timeline === null || this.timingAnimation === null) {
+			return;
+		}
 
-  /**
-   * Work around for Safari. When switching from one timeline to
-   * another Safari will jump to a random point in the first
-   * timeline unless the effect target of each animation is set to null.
-   */
-  cancelAnimations() {
-    if (this.animations === undefined || this.animations === null) { return; }
-    this.animations.forEach((animation) => {
-      animation.effect.target = null;
-    });
-    this.animations = [];
-  }
+		this.animations.forEach((animation) => {
+			animation.currentTime = time;
+		});
 
-  /**
-   * Plays the current timeline for `self`. If the player is currently playing, or the current timeline is `null` this function does nothing.
-   */
-  play() {
-    if (this.timeline == null || this.isPlaying() === true) {
-      return;
-    }
+		this.timeline.allShapes.forEach((shape) => {
+			shape.setCurrentTime(time / 1000);
+		});
 
-    this.timingAnimation.play();
-    this.animations.forEach((animation) => {
-      animation.play();
-    });
+		this.timingAnimation.currentTime = time;
+	}
 
-    this.timeline.allShapes.forEach((shape) => {
-      const t = shape.getCurrentTime() % this.timeline.duration;
-      shape.setCurrentTime(t);
-      shape.unpauseAnimations();
-    });
+	/**
+	 * Work around for Safari. When switching from one timeline to
+	 * another Safari will jump to a random point in the first
+	 * timeline unless the effect target of each animation is set to null.
+	 */
+	cancelAnimations() {
+		if (this.animations === undefined || this.animations === null) {
+			return;
+		}
+		this.animations.forEach((animation) => {
+			animation.effect.target = null;
+		});
+		this.animations = [];
+	}
 
-    // Send a message to the parent window that the animation has started
-    window.parent.postMessage({ type: 'chartAnimationStart' }, '*');
-  }
+	/**
+	 * Plays the current timeline for `self`. If the player is currently playing, or the current timeline is `null` this function does nothing.
+	 */
+	play() {
+		if (this.timeline == null || this.isPlaying() === true) {
+			return;
+		}
 
-  /**
-   * @return {Boolean}
-   * Returns true if self is currently playing an animation and false otherwise.
-   */
-  isPlaying() {
-    if (this.timingAnimation == null) {
-      return false;
-    }
-    return this.timingAnimation.playState === 'running';
-  }
+		this.timingAnimation.play();
+		this.animations.forEach((animation) => {
+			animation.play();
+		});
 
-  /**
-   * Pauses the animation being played by self.
-   */
-  pause() {
-    if (this.timeline === null || this.timingAnimation === null) {
-      return;
-    }
+		this.timeline.allShapes.forEach((shape) => {
+			const t = shape.getCurrentTime() % this.timeline.duration;
+			shape.setCurrentTime(t);
+			shape.unpauseAnimations();
+		});
 
-    this.timingAnimation.pause();
-    this.animations.forEach((animation) => {
-      animation.pause();
-    });
-    this.timeline.allShapes.forEach((shape) => {
-      shape.pauseAnimations();
-    });
+		// Send a message to the parent window that the animation has started
+		window.parent.postMessage({
+			type: 'chartAnimationStart'
+		}, '*');
+	}
 
-    // Send a message to the parent window that the animation has paused
-    window.parent.postMessage({ type: 'chartAnimationPause' }, '*');
-  }
+	/**
+	 * @return {Boolean}
+	 * Returns true if self is currently playing an animation and false otherwise.
+	 */
+	isPlaying() {
+		if (this.timingAnimation == null) {
+			return false;
+		}
+		return this.timingAnimation.playState === 'running';
+	}
 
-  /**
-   * Stops the animation.
-   */
-  stop() {
-    this.shouldPlay = false;
-    this.pause();
-    this.currentTime = 0;
+	/**
+	 * Pauses the animation being played by self.
+	 */
+	pause() {
+		if (this.timeline === null || this.timingAnimation === null) {
+			return;
+		}
 
-    // Send a message to the parent window that the animation has stopped
-    window.parent.postMessage({ type: 'chartAnimationStop' }, '*');
-  }
+		this.timingAnimation.pause();
+		this.animations.forEach((animation) => {
+			animation.pause();
+		});
+		this.timeline.allShapes.forEach((shape) => {
+			shape.pauseAnimations();
+		});
 
-  /**
-   * Sets the callback function that will be run at the end of each animation.
-   */
-  setOnFinishCallback() {
-    if (this.timingAnimation == null) {
-      return;
-    }
-    this.timingAnimation.onfinish = () => {
-      if (this.loop === true) {
-        this.currentTime = 0;
-        this.play(); // Automatically replay on finish
-      } else {
-        this.pause();
+		// Send a message to the parent window that the animation has paused
+		window.parent.postMessage({
+			type: 'chartAnimationPause'
+		}, '*');
+	}
 
-        // Send a message to the parent window that the animation has stopped
-        window.parent.postMessage({ type: 'chartAnimationStop' }, '*');
-      }
-      if (typeof this.callback != undefined && this.callback != null) this.callback();
-    };
-  }
+	/**
+	 * Stops the animation.
+	 */
+	stop() {
+		this.shouldPlay = false;
+		this.pause();
+		this.currentTime = 0;
 
-  /**
-   * Converts a numeric value representing a time in milliseconds into a string.
-   */
-  static convertTimeToString(milliseconds) {
-    const date = new Date(null);
-    date.setMilliseconds(milliseconds);
-    return date.toISOString().substr(14, 8);
-  }
+		// Send a message to the parent window that the animation has stopped
+		window.parent.postMessage({
+			type: 'chartAnimationStop'
+		}, '*');
+	}
+
+	/**
+	 * Sets the callback function that will be run at the end of each animation.
+	 */
+	setOnFinishCallback() {
+		if (this.timingAnimation == null) {
+			return;
+		}
+		this.timingAnimation.onfinish = () => {
+			if (this.loop === true) {
+				this.currentTime = 0;
+				this.play(); // Automatically replay on finish
+			} else {
+				this.pause();
+
+				// Send a message to the parent window that the animation has stopped
+				window.parent.postMessage({
+					type: 'chartAnimationStop'
+				}, '*');
+			}
+			if (typeof this.callback != undefined && this.callback != null) this.callback();
+		};
+	}
+
+	/**
+	 * Converts a numeric value representing a time in milliseconds into a string.
+	 */
+	static convertTimeToString(milliseconds) {
+		const date = new Date(null);
+		date.setMilliseconds(milliseconds);
+		return date.toISOString().substr(14, 8);
+	}
 }
 
 // eslint-disable-next-line no-unused-vars
 function createPlayer(
-  Timeline,
-  timerID,
-  loop,
-  delay,
-  callback,
-  rootID,
-  elementID,
-  resourcesPath
+	Timeline,
+	timerID,
+	loop,
+	delay,
+	callback,
+	rootID,
+	elementID,
+	resourcesPath
 ) {
-  const shadowDomContainer = document.getElementById(rootID);
-  const { shadowRoot } = shadowDomContainer;
-  const timer = shadowRoot.getElementById(timerID);
-  const forwardTimeline = new Timeline(shadowRoot, elementID, resourcesPath);
-  
-  // Create a new Player instance
-  return new Player(forwardTimeline, timer, loop, delay, callback);
+	const shadowDomContainer = document.getElementById(rootID);
+	const {
+		shadowRoot
+	} = shadowDomContainer;
+	const timer = shadowRoot.getElementById(timerID);
+	const forwardTimeline = new Timeline(shadowRoot, elementID, resourcesPath);
+
+	// Create a new Player instance
+	return new Player(forwardTimeline, timer, loop, delay, callback);
 }
