@@ -1,4 +1,4 @@
-// V4
+// V5
 class Player {
   /**
    * @constructor
@@ -237,7 +237,7 @@ function createPlayer(
   const player = new Player(forwardTimeline, timer, loop, delay, callback);
 
   // Create an Intersection Observer to trigger the play when the .impact element is 80% in view
-  const impactElement = document.querySelector('.impact');
+  const impactElement = document.querySelector('.impact__chart-inner-container');
   
   const observer = new IntersectionObserver(
     (entries, observer) => {
