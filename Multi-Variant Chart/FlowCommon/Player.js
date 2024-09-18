@@ -1,11 +1,11 @@
-// V18
+// V19
 
 // Function to animate the appearance of each .variant element in sequence
 function animateVariants() {
   // Select all elements with the class .variant
   const variants = document.querySelectorAll('.variant');
 
-  // Set initial opacity to 0 for all variants
+  // Set initial opacity to 0 for all variants to hide them
   variants.forEach((variant) => {
     variant.style.opacity = '0';
   });
@@ -14,7 +14,8 @@ function animateVariants() {
   variants.forEach((variant, index) => {
     // Delay each variant's animation by 250ms * index
     setTimeout(() => {
-      variant.classList.add('fade-in'); // Add the fade-in class to trigger the animation
+      variant.style.transition = 'opacity 0.5s ease'; // Add transition for fading
+      variant.style.opacity = '1'; // Fade in by setting opacity to 1
     }, index * 250); // Each element appears 250ms after the last one
   });
 }
@@ -41,9 +42,6 @@ class Player {
     this.timeline = timeline;
     this.callback = callback;
     this.setOnFinishCallback();
-
-    // Initialize the animations array
-    this.animations = [];
 
     // Automatically wait for the element to be fully in view before playing
     this.setupIntersectionObserver();
