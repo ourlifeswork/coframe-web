@@ -1,4 +1,4 @@
-// V20
+// V21
 
 // Function to animate the appearance of each .variant element in sequence
 function animateVariants() {
@@ -7,6 +7,11 @@ function animateVariants() {
 
   // Log to make sure the elements are being selected
   console.log('Variants found:', variants.length);
+
+  if (variants.length === 0) {
+    console.error('No .variant elements found in the DOM');
+    return;
+  }
 
   // Set initial opacity to 0 for all variants to hide them
   variants.forEach((variant) => {
@@ -124,8 +129,8 @@ class Player {
       shape.unpauseAnimations();
     });
 
-    // Trigger the staggered animation for the .variant elements
-    animateVariants();  // Call the animateVariants function
+    // Trigger the staggered animation for the .variant elements **only after the animation begins**
+    animateVariants();  // Call the animateVariants function after the main animation starts
   }
 
   initializeTimingAnimation() {
@@ -173,7 +178,7 @@ class Player {
         this.callback();
       }
 
-      // Trigger the staggered animation for the .variant elements
+      // Trigger the staggered animation for the .variant elements after the animation ends
       animateVariants();
     };
   }
