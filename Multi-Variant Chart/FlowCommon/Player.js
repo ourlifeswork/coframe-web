@@ -1,4 +1,4 @@
-// V17
+// V18
 
 // Function to animate the appearance of each .variant element in sequence
 function animateVariants() {
@@ -41,6 +41,9 @@ class Player {
     this.timeline = timeline;
     this.callback = callback;
     this.setOnFinishCallback();
+
+    // Initialize the animations array
+    this.animations = [];
 
     // Automatically wait for the element to be fully in view before playing
     this.setupIntersectionObserver();
@@ -94,9 +97,14 @@ class Player {
     // Play the timing animation if it exists
     this.timingAnimation.play();
 
-    // Check if animations are defined
+    // Initialize the animations if they haven't been set yet
     if (!this.animations || this.animations.length === 0) {
-      console.error("Error: animations array is undefined or empty.");
+      this.initializeAnimations();
+    }
+
+    // Check if animations are defined and not empty
+    if (!this.animations || this.animations.length === 0) {
+      console.error("Error: animations array is still undefined or empty after initialization.");
       return;
     }
 
@@ -124,6 +132,18 @@ class Player {
       this.timingAnimation.pause();
     } else {
       console.error("Error: Unable to initialize timingAnimation. Timer or timeline is invalid.");
+    }
+  }
+
+  initializeAnimations() {
+    // Ensure that the timeline has the method createAllAnimations and returns valid animations
+    if (this.timeline && typeof this.timeline.createAllAnimations === 'function') {
+      this.animations = this.timeline.createAllAnimations();
+      if (!this.animations || this.animations.length === 0) {
+        console.error("Error: No animations created by timeline.");
+      }
+    } else {
+      console.error("Error: timeline does not have a createAllAnimations function or it returned no animations.");
     }
   }
 
