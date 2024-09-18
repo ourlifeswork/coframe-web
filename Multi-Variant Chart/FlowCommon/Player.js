@@ -1,4 +1,4 @@
-// V2
+// V3
 class Player {
   /**
    * @constructor
@@ -250,7 +250,7 @@ function createPlayer(
       });
     },
     {
-      threshold: 0.5, // 50% of the element needs to be visible to trigger the play
+      threshold: 1, // 50% of the element needs to be visible to trigger the play
     }
   );
 
