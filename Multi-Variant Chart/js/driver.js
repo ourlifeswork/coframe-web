@@ -7,191 +7,195 @@
  * - a slider
  */
 class Driver {
-  // Constructs a player, stores provided DOM elements as variables, creates an interval for updating the time and slider.
-  constructor(timeline, loopID, playPauseID, sliderID, timeLabelID, timer) {
-    // Associate driver components with variables
-    this.slider = document.getElementById(sliderID);
-    this.animationTime = document.getElementById(timeLabelID);
-    this.playPauseButton = document.getElementById(playPauseID);
-    this.loopButton = document.getElementById(loopID);
-    this.timer = timer;
+	// Constructs a player, stores provided DOM elements as variables, creates an interval for updating the time and slider.
+	constructor(timeline, loopID, playPauseID, sliderID, timeLabelID, timer) {
+		// Associate driver components with variables
+		this.slider = document.getElementById(sliderID);
+		this.animationTime = document.getElementById(timeLabelID);
+		this.playPauseButton = document.getElementById(playPauseID);
+		this.loopButton = document.getElementById(loopID);
+		this.timer = timer;
 
-    // Create a player
-    this.player = new Player(timeline, timer, false, 0);
-    this.interval = setInterval(() => {
-      this.updateSliderIfAnimating();
-    }, 100 / 3);
-    this.createControlFunctions();
-  }
+		// Create a player
+		this.player = new Player(timeline, timer, false, 0);
+		this.interval = setInterval(() => {
+			this.updateSliderIfAnimating();
+		}, 100 / 3);
+		this.createControlFunctions();
+	}
 
-  // Returns the timeline from the player
-  get timeline() {
-    return this.player.timeline;
-  }
+	// Returns the timeline from the player
+	get timeline() {
+		return this.player.timeline;
+	}
 
-  // Sets the timeline from the player
-  set timeline(timeline) {
-    this.player.timeline = timeline;
-  }
+	// Sets the timeline from the player
+	set timeline(timeline) {
+		this.player.timeline = timeline;
+	}
 
-  // Returns the duration of the timeline from the player
-  get duration() {
-    return this.player.duration;
-  }
+	// Returns the duration of the timeline from the player
+	get duration() {
+		return this.player.duration;
+	}
 
-  // Returns the current time from the player
-  get currentTime() {
-    return this.player.currentTime;
-  }
+	// Returns the current time from the player
+	get currentTime() {
+		return this.player.currentTime;
+	}
 
-  // Sets the current time for the player, updates the position of the slider
-  set currentTime(time) {
-    this.slider.value = time / this.duration;
-    this.player.currentTime = time;
-  }
+	// Sets the current time for the player, updates the position of the slider
+	set currentTime(time) {
+		this.slider.value = time / this.duration;
+		this.player.currentTime = time;
+	}
 
-  // Updates the position of the timer if the player is currenty playing
-  updateSliderIfAnimating() {
-    // The player could be one of `idle`, `running`, `paused`, or `finished`
-    // We want to update in any stae other than `running`
-    if (this.player.timingAnimation.playState != "paused") {
-      this.sliderValue = this.currentTime / this.timeline.duration;
-    }
-  }
+	// Updates the position of the timer if the player is currenty playing
+	updateSliderIfAnimating() {
+		// The player could be one of `idle`, `running`, `paused`, or `finished`
+		// We want to update in any stae other than `running`
+		if (this.player.timingAnimation.playState != "paused") {
+			this.sliderValue = this.currentTime / this.timeline.duration;
+		}
+	}
 
-  // Initiates playback, starts the interval for updating the slider
-  play() {
-    this.interval = setInterval(() => {
-      this.updateSliderIfAnimating();
-    }, 100 / 3);
-    this.player.play();
-  }
+	// Initiates playback, starts the interval for updating the slider
+	play() {
+		this.interval = setInterval(() => {
+			this.updateSliderIfAnimating();
+		}, 100 / 3);
+		this.player.play();
+	}
 
-  // Returns true if the player is currently playing
-  isPlaying() {
-    return this.player.isPlaying();
-  }
+	// Returns true if the player is currently playing
+	isPlaying() {
+		return this.player.isPlaying();
+	}
 
-  // Pauses playback, clears the interval to stop updating the slider
-  pause() {
-    clearInterval(this.interval);
-    this.player.pause();
-  }
+	// Pauses playback, clears the interval to stop updating the slider
+	pause() {
+		clearInterval(this.interval);
+		this.player.pause();
+	}
 
-  // Ends playback, resets the current time to `0`
-  stop() {
-    if (this.playPauseButton !== null) {
-      // set the state for the play/pause button
-      this.playPauseButton.checked = false;
-    }
-    
-    // store whether or not the driver should automatically continue playback 
-    this.shouldPlay = false;
-    this.pause();
+	// Ends playback, resets the current time to `0`
+	stop() {
+		if (this.playPauseButton !== null) {
+			// set the state for the play/pause button
+			this.playPauseButton.checked = false;
+		}
 
-    let d = this.duration;
-    this.sliderValue = d / this.timeline.duration - 0.001;
-  }
+		// store whether or not the driver should automatically continue playback 
+		this.shouldPlay = false;
+		this.pause();
 
-  // The action associated with the play/pause button.
-  // Triggers playback if paused. Pauses the animation if it is playing.
-  // If playback is triggered, and the animation has already finished, it resets the animation to `0` before triggering playback.
-  togglePlayback() {
-    var isChecked = false;
+		let d = this.duration;
+		this.sliderValue = d / this.timeline.duration - 0.001;
+	}
 
-    if (this.playPauseButton !== null) {
-      isChecked = this.playPauseButton.checked;
-    }
-    
-    if (isChecked) {
-      this.shouldPlay = true;
-      if (
-        this.player.timingAnimation.playState == "finished" ||
-        this.currentTime == this.timeline.duration
-      ) {
-        this.currentTime = 0;
-      }
-      this.play();
-    } else {
-      this.shouldPlay = false;
-      this.pause();
-    }
-  }
+	// The action associated with the play/pause button.
+	// Triggers playback if paused. Pauses the animation if it is playing.
+	// If playback is triggered, and the animation has already finished, it resets the animation to `0` before triggering playback.
+	togglePlayback() {
+		var isChecked = false;
 
-  //------------------
-  // interface updates
-  //------------------
+		if (this.playPauseButton !== null) {
+			isChecked = this.playPauseButton.checked;
+		}
 
-  // Associates the UI components with actions above.
-  createControlFunctions() {
-    // Link the play/pause button
-    this.playPauseButton.onchange = () => {
-      this.togglePlayback();
-    };
+		if (isChecked) {
+			this.shouldPlay = true;
+			if (
+				this.player.timingAnimation.playState == "finished" ||
+				this.currentTime == this.timeline.duration
+			) {
+				this.currentTime = 0;
+			}
+			this.play();
+		} else {
+			this.shouldPlay = false;
+			this.pause();
+		}
+	}
 
-    this.player.timingAnimation.onfinish = () => {
-      if (this.loopButton.checked) {
-        this.currentTime = 0;
-      } else {
-        this.stop();
-      }
-    };
+	//------------------
+	// interface updates
+	//------------------
 
-    // Link the slider with input actions
-    this.slider.oninput = () => {
-      // Always pause the animation when interacting with the slider
-      this.pause();
+	// Associates the UI components with actions above.
+	createControlFunctions() {
+		if (this.playPauseButton !== null) {
+			// Link the play/pause button
+			this.playPauseButton.onchange = () => {
+				this.togglePlayback();
+			};
+		}
 
-      // Calculate and update the time based on slider position
-      var newTime = this.slider.value * this.duration;
+		this.player.timingAnimation.onfinish = () => {
+			if (this.loopButton !== null) {
+				if (this.loopButton.checked) {
+					this.currentTime = 0;
+				} else {
+					this.stop();
+				}
+			}
+		};
 
-      // Select the smaller of the current time. 
-      // Or, if the slider is at its rightmost limit (i.e. the end of the animation) set the current time to 1 millisecond shorter than `duration`. 
-      var newTime = Math.min(newTime, this.duration - 1);
+		// Link the slider with input actions
+		this.slider.oninput = () => {
+			// Always pause the animation when interacting with the slider
+			this.pause();
 
-      // Set the new time
-      this.currentTime = newTime;
-    };
+			// Calculate and update the time based on slider position
+			var newTime = this.slider.value * this.duration;
 
-    // Link the slider to logic for triggering playback
-    this.slider.onchange = () => {
-      // If the slider was interacted with while it was playing, resume playback after releasing the slider.
-      if (this.shouldPlay) {
-        this.play();
-      }
-    };
-  }
+			// Select the smaller of the current time. 
+			// Or, if the slider is at its rightmost limit (i.e. the end of the animation) set the current time to 1 millisecond shorter than `duration`. 
+			var newTime = Math.min(newTime, this.duration - 1);
 
-  // Gets the current value of the slider
-  get sliderValue() {
-    return this.slider.value;
-  }
+			// Set the new time
+			this.currentTime = newTime;
+		};
 
-  // Sets the current value of the slider
-  set sliderValue(value) {
-    if (this.slider === null || value === null) return;
-    this.slider.value = value;
-  }
+		// Link the slider to logic for triggering playback
+		this.slider.onchange = () => {
+			// If the slider was interacted with while it was playing, resume playback after releasing the slider.
+			if (this.shouldPlay) {
+				this.play();
+			}
+		};
+	}
 
-  //---------------
-  // helper methods
-  //---------------
+	// Gets the current value of the slider
+	get sliderValue() {
+		return this.slider.value;
+	}
 
-  // Converts the current time, in milliseconds, to a readable string representing minutes and seconds
-  static convertTimeToString(milliseconds) {
-    var truncatedMilliseconds = Math.floor(
-      Math.floor(milliseconds % 1000, 0) / 10,
-      2
-    );
-    var seconds = Math.floor(milliseconds / 1000, 0);
-    var timeString = seconds + "";
-    if (truncatedMilliseconds != 0) {
-      timeString += ".";
-      if (truncatedMilliseconds < 10) {
-        timeString += "0";
-      }
-      timeString += truncatedMilliseconds;
-    }
-    return timeString + " s";
-  }
+	// Sets the current value of the slider
+	set sliderValue(value) {
+		if (this.slider === null || value === null) return;
+		this.slider.value = value;
+	}
+
+	//---------------
+	// helper methods
+	//---------------
+
+	// Converts the current time, in milliseconds, to a readable string representing minutes and seconds
+	static convertTimeToString(milliseconds) {
+		var truncatedMilliseconds = Math.floor(
+			Math.floor(milliseconds % 1000, 0) / 10,
+			2
+		);
+		var seconds = Math.floor(milliseconds / 1000, 0);
+		var timeString = seconds + "";
+		if (truncatedMilliseconds != 0) {
+			timeString += ".";
+			if (truncatedMilliseconds < 10) {
+				timeString += "0";
+			}
+			timeString += truncatedMilliseconds;
+		}
+		return timeString + " s";
+	}
 }
