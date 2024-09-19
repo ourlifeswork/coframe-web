@@ -46,6 +46,7 @@ class Driver {
 
 	// Sets the current time for the player, updates the position of the slider
 	set currentTime(time) {
+		if (this.slider === null || this.player === null || this.duration === null) return;
 		this.slider.value = time / this.duration;
 		this.player.currentTime = time;
 	}
