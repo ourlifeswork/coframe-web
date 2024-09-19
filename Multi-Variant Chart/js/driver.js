@@ -124,6 +124,8 @@ class Driver {
 
 	// Associates the UI components with actions above.
 	createControlFunctions() {
+		if (this.slider === null) return;
+		
 		if (this.playPauseButton !== null) {
 			// Link the play/pause button
 			this.playPauseButton.onchange = () => {
