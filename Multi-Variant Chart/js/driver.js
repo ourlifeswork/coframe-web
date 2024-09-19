@@ -56,7 +56,6 @@ class Driver {
     // We want to update in any stae other than `running`
     if (this.player.timingAnimation.playState != "paused") {
       this.sliderValue = this.currentTime / this.timeline.duration;
-      this.setAnimationTimeLabels(this.currentTime);
     }
   }
 
@@ -81,14 +80,16 @@ class Driver {
 
   // Ends playback, resets the current time to `0`
   stop() {
-    // set the state for the play/pause button
-    this.playPauseButton.checked = false;
+    if (this.playPauseButton !== null) {
+      // set the state for the play/pause button
+      this.playPauseButton.checked = false;
+    }
+    
     // store whether or not the driver should automatically continue playback 
     this.shouldPlay = false;
     this.pause();
 
     let d = this.duration;
-    this.setAnimationTimeLabels(d);
     this.sliderValue = d / this.timeline.duration - 0.001;
   }
 
@@ -96,7 +97,13 @@ class Driver {
   // Triggers playback if paused. Pauses the animation if it is playing.
   // If playback is triggered, and the animation has already finished, it resets the animation to `0` before triggering playback.
   togglePlayback() {
-    if (this.playPauseButton.checked) {
+    var isChecked = false;
+
+    if (this.playPauseButton !== null) {
+      isChecked = this.playPauseButton.checked;
+    }
+    
+    if (isChecked) {
       this.shouldPlay = true;
       if (
         this.player.timingAnimation.playState == "finished" ||
@@ -137,7 +144,6 @@ class Driver {
 
       // Calculate and update the time based on slider position
       var newTime = this.slider.value * this.duration;
-      this.setAnimationTimeLabels(newTime);
 
       // Select the smaller of the current time. 
       // Or, if the slider is at its rightmost limit (i.e. the end of the animation) set the current time to 1 millisecond shorter than `duration`. 
@@ -154,11 +160,6 @@ class Driver {
         this.play();
       }
     };
-  }
-
-  // Sets the current time label
-  setAnimationTimeLabels(value) {
-    this.animationTime.innerHTML = Driver.convertTimeToString(value);
   }
 
   // Gets the current value of the slider
