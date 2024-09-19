@@ -1,4 +1,4 @@
-// V29
+// V30
 
 class Player {
 	/**
@@ -22,7 +22,7 @@ class Player {
 	 */
 	constructor(timeline, timer, loop = false, delay, callback) {
 		this.delay = delay;
-		this._playbackRate = 0.5;
+		this._playbackRate = 0.75;
 
 		// Ensure the timer is an HTML element or ID
 		if (typeof timer === 'string' || timer instanceof String) {
