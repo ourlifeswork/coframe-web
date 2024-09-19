@@ -22,7 +22,7 @@ class Player {
 	 */
 	constructor(timeline, timer, loop = false, delay, callback) {
 		this.delay = delay;
-		this._playbackRate = 0.9;
+		this._playbackRate = 1.0;
 
 		// Ensure the timer is an HTML element or ID
 		if (typeof timer === 'string' || timer instanceof String) {
@@ -64,7 +64,7 @@ class Player {
 					}
 				});
 			}, {
-				threshold: 1.0, // 100% visibility required to trigger the play
+				threshold: 0.9, // 100% visibility required to trigger the play
 			}
 		);
 
