@@ -382,9 +382,8 @@
 					console.log('Found selector', targetElement);
 
 					if (targetElement) {
-						// Set the transition and opacity without !important
-						targetElement.style.transition = 'opacity 0.3s cubic-bezier(0.42, 0, 0.58, 1)';
-						targetElement.style.opacity = '0.2';
+						targetElement.style.setProperty('transition', 'opacity 0.3s cubic-bezier(0.42, 0, 0.58, 1)', 'important');
+						targetElement.style.setProperty('opacity', '0.2', 'important');
 					}
 				}
 			});
