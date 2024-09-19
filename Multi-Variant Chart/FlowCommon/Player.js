@@ -192,6 +192,11 @@ class Player {
 	 * Plays the current timeline for `self`. If the player is currently playing, or the current timeline is `null` this function does nothing.
 	 */
 	play() {
+		console.log('Started playing chart animation');
+		
+		// Send a message to the parent window that the animation has started
+		window.parent.postMessage({ type: 'chartAnimationStart' }, '*');
+		
 		if (this.timeline == null || this.isPlaying() === true) {
 			return;
 		}
@@ -209,9 +214,6 @@ class Player {
 			shape.setCurrentTime(t);
 			shape.unpauseAnimations();
 		});
-
-		// Send a message to the parent window that the animation has started
-		window.parent.postMessage({ type: 'chartAnimationStart' }, '*');
 	}
 
 	/**
