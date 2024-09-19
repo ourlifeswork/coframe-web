@@ -1,4 +1,4 @@
-// V31
+// V32
 
 class Player {
 	/**
@@ -310,11 +310,15 @@ function createPlayer(
 
 document.addEventListener("DOMContentLoaded", function() {
 	window.addEventListener('message', function(event) {
+		console.log('Message received:', event.data);
+
 		if (event.data.action === 'variantDied') {
 			const selector = event.data.selector;
 
 			// Find the element using the selector
 			const targetElement = document.querySelector(selector);
+
+			console.log('Found selector', targetElement);
 
 			if (targetElement) {
 				targetElement.style.transition = 'opacity 0.3s cubic-bezier(0.42, 0, 0.58, 1)';
