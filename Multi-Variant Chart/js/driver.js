@@ -168,6 +168,7 @@ class Driver {
 
   // Sets the current value of the slider
   set sliderValue(value) {
+    if (this.slider === null || value === null) return;
     this.slider.value = value;
   }
 
