@@ -22,7 +22,7 @@ class Player {
 	 */
 	constructor(timeline, timer, loop = false, delay, callback) {
 		this.delay = delay;
-		this._playbackRate = 0.75;
+		this._playbackRate = 0.9;
 
 		// Ensure the timer is an HTML element or ID
 		if (typeof timer === 'string' || timer instanceof String) {
