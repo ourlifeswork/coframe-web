@@ -55,7 +55,9 @@ class Player {
 				entries.forEach((entry) => {
 					// Check if the element is fully visible
 					if (entry.isIntersecting && entry.intersectionRatio === 1) {
-						this.play();
+						setTimeout(() => {
+ 							this.play();
+						}, 100);
 
 						// Stop observing once the animation is triggered
 						observer.unobserve(entry.target);
