@@ -379,16 +379,19 @@
 					// Find the element using the selector
 					const targetElement = document.querySelector(selector);
 
-					console.log('Found selector', targetElement);
-
 					if (targetElement) {
-						targetElement.style.setProperty('transition', 'opacity 0.3s cubic-bezier(0.42, 0, 0.58, 1)', 'important');
-						targetElement.style.setProperty('opacity', '0.2', 'important');
+						targetElement.classList.add('dead-variant');
 					}
 				}
 			});
 		});
 	</script>
+	<style>
+		.dead-variant {
+			opacity: 0.2 !important;
+			transition: opacity 0.3s cubic-bezier(0.42, 0, 0.58, 1) !important;
+		}
+	</style>
 </body>
 
 </html>
